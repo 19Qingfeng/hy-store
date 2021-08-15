@@ -15,7 +15,7 @@ type NativeButtonProps = React.ButtonHTMLAttributes<HTMLElement> &
 type AnchorButtonProps = React.AnchorHTMLAttributes<HTMLElement> &
   BaseButtonProps;
 
-type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
+export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
 
 const prefix = 'hy';
 
