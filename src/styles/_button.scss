@@ -1,0 +1,88 @@
+.#{$prefix}-btn {
+  position: relative;
+  display: inline-block;
+  font-weight: $btn-font-weight;
+  line-height: $btn-line-height;
+  color: $body-color;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  background-image: none;
+  border: $btn-border-width solid transparent;
+  @include button-size(
+    $btn-padding-y,
+    $btn-padding-x,
+    $btn-font-size,
+    $border-radius
+  );
+  box-shadow: $btn-box-shadow;
+  cursor: pointer;
+  transition: $btn-transition;
+  &.is-disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: $btn-disabled-opacity;
+    box-shadow: none;
+    > * {
+      pointer-events: none; // 阻止所有子元素所有鼠标事件
+    }
+  }
+
+  // 尺寸特殊样式
+  &.#{$prefix}-btn__lg {
+    @include button-size(
+      $btn-padding-y-lg,
+      $btn-padding-x-lg,
+      $btn-font-size-lg,
+      $border-radius-lg
+    );
+  }
+
+  &.#{$prefix}-btn__sm {
+    @include button-size(
+      $btn-padding-y-sm,
+      $btn-padding-x-sm,
+      $btn-font-size-sm,
+      $border-radius-sm
+    );
+  }
+
+  // 不同类型样式
+  &.#{$prefix}-btn__primary {
+    @include button-type($primary, $primary, $white);
+  }
+  &.#{$prefix}-btn__danger {
+    @include button-type($danger, $danger, $white);
+  }
+  &.#{$prefix}-btn__default {
+    @include button-type(
+      $white,
+      $gray-400,
+      $body-color,
+      $white,
+      $primary,
+      $primary
+    );
+  }
+  // 单独文字链接button
+  &.#{$prefix}-btn__link {
+    font-weight: $font-weight-normal;
+    color: $btn-link-color;
+    text-decoration: $link-decoration;
+    box-shadow: none;
+    &:hover {
+      color: $btn-link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+    &:focus,
+    &.focus {
+      color: $btn-link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+    &:disabled,
+    &.is-disabled {
+      color: $btn-link-disabled-color;
+      pointer-events: none;
+    }
+  }
+}
