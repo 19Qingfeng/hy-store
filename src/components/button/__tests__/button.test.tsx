@@ -1,6 +1,7 @@
 import Button, { ButtonProps } from '../button';
 import '@testing-library/jest-dom/extend-expect';
 import { fireEvent, render } from '@testing-library/react';
+import React from 'react';
 
 const prefix = 'hy';
 

@@ -1,10 +1,17 @@
 import './styles/index.scss';
 import Button from './components/button/button';
+import { useEffect, useRef } from 'react';
 
 export default function App() {
+  const buttonRef = useRef(null);
+  useEffect(() => {
+    console.log(buttonRef, 'buttonRef');
+  });
   return (
     <div>
-      <Button onClick={() => alert('hello')}>hello default</Button>
+      <Button ref={buttonRef} onClick={() => alert('hello')}>
+        hello default
+      </Button>
       <Button onClick={() => alert('hello')} disabled>
         hello default
       </Button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ButtonSize, ButtonType } from './constant';
 import classnames from 'classnames';
 
@@ -19,7 +19,7 @@ export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
 
 const prefix = 'hy';
 
-const Button: React.FC<ButtonProps> = (props) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { className, btnType, disabled, size, children, href, ...restProps } =
     props;
   const classes = classnames(
@@ -38,12 +38,12 @@ const Button: React.FC<ButtonProps> = (props) => {
     );
   } else {
     return (
-      <button className={classes} disabled={disabled} {...restProps}>
+      <button ref={ref} className={classes} disabled={disabled} {...restProps}>
         {children}
       </button>
     );
   }
-};
+});
 
 Button.defaultProps = {
   btnType: 'default',
