@@ -3,7 +3,6 @@ import Button from './components/button/button';
 import Menu from './components/menu/menu';
 import MenuItem from './components/menu/menu-item';
 
-
 import { useEffect, useRef } from 'react';
 
 export default function App() {
@@ -15,9 +14,9 @@ export default function App() {
   return (
     <div>
       <div>
-        <Menu>
-          <MenuItem>第一个MenuItem</MenuItem>
-          <MenuItem>第二个MenuItem</MenuItem>
+        <Menu activeIndex={0} onSelect={(index) => alert(index)}>
+          <MenuItem index={0}>第一个MenuItem</MenuItem>
+          <MenuItem index={1}>第二个MenuItem</MenuItem>
         </Menu>
       </div>
       <div>

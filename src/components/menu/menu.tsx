@@ -1,34 +1,55 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { createContext, useState } from 'react';
 
 type MenuMode = 'horizontal' | 'vertical';
-
+type SelectFn = (index: number) => void;
 export interface MenuProps {
   activeIndex?: number;
   className?: string;
   mode?: MenuMode;
   style?: React.CSSProperties;
-  onSelect?: (index: number) => void;
+  onSelect?: SelectFn;
+}
+
+export interface MenuContext {
+  activeIndex: number;
+  onSelect?: SelectFn;
 }
 
 const prefix = 'hy';
 
-const menu: React.FC<MenuProps> = (props) => {
-  const { className, mode, style, children } = props;
+export const MenuContext = createContext<MenuContext>({
+  activeIndex: 0,
+});
+
+const Menu: React.FC<MenuProps> = (props) => {
+  const { className, activeIndex, mode, style, children, onSelect } = props;
+  const [active, setActive] = useState(activeIndex);
   const classes = classNames(`${prefix}-menu`, className, {
     [`${prefix}-menu__vertical`]: mode === 'vertical',
     [`${prefix}-menu__horizontal`]: mode === 'horizontal',
   });
+  const transmitContext: MenuContext = {
+    activeIndex: active === undefined ? 0 : active,
+    onSelect: (index) => {
+      setActive(index);
+      if (onSelect) {
+        onSelect(index);
+      }
+    },
+  };
   return (
     <ul className={classes} style={style}>
-      {children}
+      <MenuContext.Provider value={transmitContext}>
+        {children}
+      </MenuContext.Provider>
     </ul>
   );
 };
 
-export default menu;
+export default Menu;
 
-menu.defaultProps = {
+Menu.defaultProps = {
   mode: 'horizontal',
   activeIndex: 0,
 };
