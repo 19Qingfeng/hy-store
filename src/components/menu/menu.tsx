@@ -11,14 +11,14 @@ export interface MenuProps {
   onSelect?: SelectFn;
 }
 
-export interface MenuContext {
+export interface IMenuContext {
   activeIndex: number;
   onSelect?: SelectFn;
 }
 
 const prefix = 'hy';
 
-export const MenuContext = createContext<MenuContext>({
+export const MenuContext = createContext<IMenuContext>({
   activeIndex: 0,
 });
 
@@ -29,7 +29,7 @@ const Menu: React.FC<MenuProps> = (props) => {
     [`${prefix}-menu__vertical`]: mode === 'vertical',
     [`${prefix}-menu__horizontal`]: mode === 'horizontal',
   });
-  const transmitContext: MenuContext = {
+  const transmitContext: IMenuContext = {
     activeIndex: active === undefined ? 0 : active,
     onSelect: (index) => {
       setActive(index);

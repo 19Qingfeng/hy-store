@@ -14,9 +14,12 @@ export default function App() {
   return (
     <div>
       <div>
-        <Menu activeIndex={0} onSelect={(index) => alert(index)}>
+        <Menu activeIndex={0} mode="vertical">
           <MenuItem index={0}>第一个MenuItem</MenuItem>
           <MenuItem index={1}>第二个MenuItem</MenuItem>
+          <MenuItem index={2} disabled>
+            第二个MenuItem Disable
+          </MenuItem>
         </Menu>
       </div>
       <div>
