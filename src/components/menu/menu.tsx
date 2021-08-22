@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { createContext, useState } from 'react';
+import { MenuItemProps } from './menu-item';
 
 type MenuMode = 'horizontal' | 'vertical';
 type SelectFn = (index: number) => void;
@@ -38,10 +39,29 @@ const Menu: React.FC<MenuProps> = (props) => {
       }
     },
   };
+  const renderChildren = () => {
+    return React.Children.map(children, (child, index) => {
+      const childrenElement =
+        child as React.FunctionComponentElement<MenuItemProps>;
+      if (childrenElement.type.displayName === 'MenuItem') {
+        // React中元素是不可变的 变化元素只能新建一个元素去替换
+        return React.cloneElement(childrenElement, {
+          index: childrenElement.props.index
+            ? childrenElement.props.index
+            : index,
+        });
+      } else {
+        // nothing
+        console.warn(
+          'Warning: menu has a child which is not a MenuItem Component.'
+        );
+      }
+    });
+  };
   return (
     <ul className={classes} style={style} data-testid="menu">
       <MenuContext.Provider value={transmitContext}>
-        {children}
+        {renderChildren()}
       </MenuContext.Provider>
     </ul>
   );
