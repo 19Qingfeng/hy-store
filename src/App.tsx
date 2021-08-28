@@ -3,6 +3,7 @@ import Button from './components/button/button';
 import Menu from './components/menu/menu';
 import MenuItem from './components/menu/menu-item';
 import SubMenu from './components/menu/sub-menu';
+import Icon from './components/icon'
 
 import { useEffect, useRef } from 'react';
 
@@ -14,6 +15,7 @@ export default function App() {
   });
   return (
     <div>
+      <Icon icon="coffee" size="10x" theme="warning" />
       <div>
         <Menu
           activeIndex={'0'}

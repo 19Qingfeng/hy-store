@@ -1,0 +1,18 @@
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
+);
+
+$prefix: 'hy';
+
+@each $key, $value in $theme-colors {
+  .#{$prefix}-icon--#{$key} {
+    color: $value;
+  }
+}
