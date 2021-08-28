@@ -3,35 +3,52 @@ import React, { createContext, useState } from 'react';
 import { MenuItemProps } from './menu-item';
 
 type MenuMode = 'horizontal' | 'vertical';
-type SelectFn = (index: number) => void;
+type MenuTriggerWay = 'hover' | 'click';
+type SelectFn = (index: string) => void;
 export interface MenuProps {
-  activeIndex?: number;
+  activeIndex?: string;
   className?: string;
   mode?: MenuMode;
   style?: React.CSSProperties;
+  trigger?: MenuTriggerWay;
+  defaultSubExtend?: string[];
   onSelect?: SelectFn;
 }
 
 export interface IMenuContext {
-  activeIndex: number;
+  activeIndex: string;
+  trigger: MenuTriggerWay;
+  defaultSubExtend?: string[];
   onSelect?: SelectFn;
 }
 
 const prefix = 'hy';
 
 export const MenuContext = createContext<IMenuContext>({
-  activeIndex: 0,
+  activeIndex: '0',
+  trigger: 'hover',
 });
 
 const Menu: React.FC<MenuProps> = (props) => {
-  const { className, activeIndex, mode, style, children, onSelect } = props;
+  const {
+    className,
+    activeIndex,
+    trigger,
+    mode,
+    style,
+    children,
+    defaultSubExtend,
+    onSelect,
+  } = props;
   const [active, setActive] = useState(activeIndex);
   const classes = classNames(`${prefix}-menu`, className, {
     [`${prefix}-menu__vertical`]: mode === 'vertical',
     [`${prefix}-menu__horizontal`]: mode === 'horizontal',
   });
   const transmitContext: IMenuContext = {
-    activeIndex: active === undefined ? 0 : active,
+    activeIndex: active === undefined ? '0' : active,
+    trigger: trigger ? trigger : 'hover',
+    defaultSubExtend,
     onSelect: (index) => {
       setActive(index);
       if (onSelect) {
@@ -43,12 +60,15 @@ const Menu: React.FC<MenuProps> = (props) => {
     return React.Children.map(children, (child, index) => {
       const childrenElement =
         child as React.FunctionComponentElement<MenuItemProps>;
-      if (childrenElement.type.displayName === 'MenuItem') {
+      if (
+        childrenElement.type.displayName === 'MenuItem' ||
+        childrenElement.type.displayName === 'SubMenu'
+      ) {
         // React中元素是不可变的 变化元素只能新建一个元素去替换
         return React.cloneElement(childrenElement, {
           index: childrenElement.props.index
             ? childrenElement.props.index
-            : index,
+            : index.toString(),
         });
       } else {
         // nothing
@@ -71,5 +91,6 @@ export default Menu;
 
 Menu.defaultProps = {
   mode: 'horizontal',
-  activeIndex: 0,
+  activeIndex: '0',
+  trigger: 'hover',
 };

@@ -2,6 +2,7 @@ import './styles/index.scss';
 import Button from './components/button/button';
 import Menu from './components/menu/menu';
 import MenuItem from './components/menu/menu-item';
+import SubMenu from './components/menu/sub-menu';
 
 import { useEffect, useRef } from 'react';
 
@@ -14,7 +15,15 @@ export default function App() {
   return (
     <div>
       <div>
-        <Menu activeIndex={0} mode="vertical">
+        <Menu
+          activeIndex={'0'}
+          trigger="click"
+          onSelect={(index) => alert(index)}
+          defaultSubExtend={['0']}
+        >
+          <SubMenu title="顶部">
+            <MenuItem>sub 1</MenuItem>
+          </SubMenu>
           <MenuItem>第一个MenuItem</MenuItem>
           <MenuItem>第二个MenuItem</MenuItem>
           <MenuItem disabled>第二个MenuItem Disable</MenuItem>
