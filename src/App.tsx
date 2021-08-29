@@ -1,9 +1,10 @@
 import './styles/index.scss';
-import Button from './components/button/button';
+// import Button from './components/button/button';
 import Menu from './components/menu/menu';
 import MenuItem from './components/menu/menu-item';
 import SubMenu from './components/menu/sub-menu';
 import Icon from './components/icon';
+import Alert from './components/alert'
 
 import { useEffect, useRef } from 'react';
 
@@ -15,6 +16,9 @@ export default function App() {
   });
   return (
     <div>
+      <div>
+        <Alert message="hello world" />
+      </div>
       <Icon icon="coffee" size="10x" theme="warning" />
       <div>
         <Menu
