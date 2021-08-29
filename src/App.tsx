@@ -3,7 +3,7 @@ import Button from './components/button/button';
 import Menu from './components/menu/menu';
 import MenuItem from './components/menu/menu-item';
 import SubMenu from './components/menu/sub-menu';
-import Icon from './components/icon'
+import Icon from './components/icon';
 
 import { useEffect, useRef } from 'react';
 
@@ -19,10 +19,8 @@ export default function App() {
       <div>
         <Menu
           activeIndex={'0'}
-          trigger="click"
           onSelect={(index) => alert(index)}
-          defaultSubExtend={['0']}
-          mode="vertical"
+          trigger="click"
         >
           <SubMenu title="顶部">
             <MenuItem>sub 1</MenuItem>
@@ -32,7 +30,7 @@ export default function App() {
           <MenuItem disabled>第二个MenuItem Disable</MenuItem>
         </Menu>
       </div>
-      <div>
+      {/* <div>
         <Button ref={buttonRef} onClick={() => alert('hello')}>
           hello default
         </Button>
@@ -56,7 +54,7 @@ export default function App() {
         <Button btnType="link" href="https://baidu.com" size="sm" disabled>
           链接
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }

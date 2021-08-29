@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import { MenuContext } from './menu';
 import { MenuItemProps } from './menu-item';
+import Transition from '../transiton';
 
 export interface SumMenuProps {
   index?: string;
@@ -84,7 +85,9 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
         {title}
         <Icon icon="angle-down" className={`${prefix}-submenu__icon`} />
       </div>
-      {renderChildren()}
+      <Transition animationName="zoom-in-top" timeout={30000} in={menuOpen}>
+        {renderChildren()}
+      </Transition>
     </li>
   );
 };
