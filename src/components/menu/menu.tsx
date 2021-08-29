@@ -18,6 +18,7 @@ export interface MenuProps {
 export interface IMenuContext {
   activeIndex: string;
   trigger: MenuTriggerWay;
+  mode: MenuMode;
   defaultSubExtend?: string[];
   onSelect?: SelectFn;
 }
@@ -27,6 +28,7 @@ const prefix = 'hy';
 export const MenuContext = createContext<IMenuContext>({
   activeIndex: '0',
   trigger: 'hover',
+  mode: 'horizontal',
 });
 
 const Menu: React.FC<MenuProps> = (props) => {
@@ -49,6 +51,7 @@ const Menu: React.FC<MenuProps> = (props) => {
     activeIndex: active === undefined ? '0' : active,
     trigger: trigger ? trigger : 'hover',
     defaultSubExtend,
+    mode: mode ? mode : 'horizontal',
     onSelect: (index) => {
       setActive(index);
       if (onSelect) {

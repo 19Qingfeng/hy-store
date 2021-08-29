@@ -22,6 +22,7 @@ export default function App() {
           trigger="click"
           onSelect={(index) => alert(index)}
           defaultSubExtend={['0']}
+          mode="vertical"
         >
           <SubMenu title="顶部">
             <MenuItem>sub 1</MenuItem>

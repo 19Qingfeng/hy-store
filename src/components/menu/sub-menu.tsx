@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import classNames from 'classnames';
+import Icon from '../icon';
 import { MenuContext } from './menu';
 import { MenuItemProps } from './menu-item';
 
@@ -15,13 +16,16 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   // props
   const { index, title, className, children } = props;
   // provide
-  const { trigger, defaultSubExtend } = useContext(MenuContext);
+  const { trigger, mode, defaultSubExtend } = useContext(MenuContext);
   // data
-  const isDefaultExpend = defaultSubExtend?.includes(index!)
+  const isDefaultExpend = defaultSubExtend?.includes(index!);
   const [menuOpen, setMenuOpen] = useState(isDefaultExpend);
+  // 是否是true 如果是true 默认给他一个箭头展开的效果
   const classes = classNames(
     `${prefix}-menu-item`,
     `${prefix}-submenu-item`,
+    { 'is-open': menuOpen },
+    { 'is-vertical': mode === 'vertical' },
     className
   );
   // methods
@@ -76,8 +80,9 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   };
   return (
     <li key={index} className={classes} {...hoverEvents}>
-      <div className={`${prefix}-submenu-title`} {...clickEvents}>
+      <div className={`${prefix}-submenu__title`} {...clickEvents}>
         {title}
+        <Icon icon="angle-down" className={`${prefix}-submenu__icon`} />
       </div>
       {renderChildren()}
     </li>

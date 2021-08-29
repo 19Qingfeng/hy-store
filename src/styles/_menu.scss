@@ -31,9 +31,29 @@
 
   .#{$prefix}-submenu-item {
     position: relative;
-    .#{prefix}-submenu-title {
+    .#{$prefix}-submenu__title {
       display: flex;
       align-items: center;
+    }
+    .#{$prefix}-submenu__icon {
+      margin-left: 3px;
+      transition: transform 0.3s ease-in-out;
+    }
+    &:hover {
+      .#{$prefix}-submenu__icon {
+        color: $menu-item-active-color;
+      }
+    }
+  }
+
+  .is-vertical {
+    .#{$prefix}-submenu__icon {
+      transform: rotate(0deg) !important;
+    }
+  }
+  .is-open {
+    .#{$prefix}-submenu__icon {
+      transform: rotate(180deg) !important;
     }
   }
 
@@ -68,6 +88,13 @@
     &.is-active {
       border-bottom: 0px;
       border-left: $menu-item-active-border-width solid $menu-item-active-color;
+    }
+  }
+  .#{$prefix}-menu-item.#{$prefix}-submenu-item {
+    .#{$prefix}-menu-item {
+      &:hover {
+        border-left-color: transparent;
+      }
     }
   }
 }

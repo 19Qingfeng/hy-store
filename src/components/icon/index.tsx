@@ -37,7 +37,7 @@ const Icon: React.FC<IconProps> = (props) => {
 };
 
 Icon.defaultProps = {
-  theme: 'primary',
+  theme: 'secondary',
 };
 
 export default Icon;
