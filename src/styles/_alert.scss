@@ -1,4 +1,58 @@
-@include b('alert') {
-  // just test for undone component
-  background: red;
+$theme-colors: ("primary", $primary, $primary-icon-color),
+  ("success", $success, $success-icon-color), ("info", $info, $info-icon-color),
+  ("warning", $warning, $warning-icon-color),
+  ("danger", $danger, $danger-icon-color);
+
+@include b("alert") {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 14px 20px;
+  color: #000000d9;
+  font-size: 12px;
+
+  .#{$prefix}-alert__icon {
+    font-size: 14px;
+    margin-right: 10px;
+    height: 100%;
+    align-self: flex-start;
+    &.is-scale {
+      width: 24px;
+      margin: 0 15px 0 10px;
+      .#{$prefix}-alert__svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &__content {
+    flex: 1;
+    .#{$prefix}-alert__title {
+      line-height: 22px;
+      font-size: 14px;
+      &.is-bold {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__close {
+    color: #00000073;
+    right: 10px;
+    &:hover {
+      cursor: pointer;
+      transform: color 0.3s;
+      color: lighten(#00000073, 20%);
+    }
+  }
+
+  @each $key, $value, $icon-color in $theme-colors {
+    &--#{$key} {
+      background-color: $value;
+      .#{$prefix}-alert__icon {
+        color: $icon-color;
+      }
+    }
+  }
 }

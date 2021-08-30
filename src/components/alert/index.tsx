@@ -1,20 +1,39 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { forwardRef, useState } from "react";
+import classNames from "classnames";
+import Icon, { IconProp } from "../icon";
+import { isValidValue } from "../../utils";
 
-type AlertType = 'success' | 'info' | 'warning' | 'error';
+type AlertType = "primary" | "success" | "info" | "warning" | "danger";
 
 interface AlertProps {
-  /** Content of Alert */
   message: React.ReactNode; // 消息提示内容
   className?: string;
-  /** Type of Alert styles, options:`success`, `info`, `warning`, `error` */
+  showClose?: boolean;
+  showIcon?: boolean; // 是否需要图标
   type?: AlertType; // 类型
+  children?: React.ReactNode;
 }
 
-const prefix = 'hy';
+const iconMaps = {
+  primary: "exclamation-circle",
+  success: "check-circle",
+  info: "info-circle",
+  warning: "exclamation-triangle",
+  danger: "radiation-alt",
+};
 
-const Alert: React.FC<AlertProps> = (props) => {
-  const { className, type = 'info' } = props;
+const prefix = "hy";
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
+  const {
+    className,
+    type = "info",
+    showIcon = true,
+    showClose = true,
+    children,
+  } = props;
+  const [isShow, setShow] = useState(true);
+  const hasChildren = isValidValue(children);
   const classes = classNames(
     `${prefix}-alert`,
     {
@@ -22,7 +41,70 @@ const Alert: React.FC<AlertProps> = (props) => {
     },
     className
   );
-  return <div className={classes}>{props.message}</div>;
-};
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const renderIcon = () => {
+    const currentIcon = iconMaps[type] as IconProp;
+    const classes = classNames(`${prefix}-alert__icon`, {
+      "is-scale": hasChildren,
+    });
+    return (
+      <div className={classes}>
+        <Icon className={`${prefix}-alert__svg`} icon={currentIcon}></Icon>
+      </div>
+    );
+  };
+
+  const renderClose = () => {
+    return (
+      <Icon
+        className={`${prefix}-alert__close`}
+        onClick={handleClose}
+        icon="times-circle"
+      ></Icon>
+    );
+  };
+
+  const renderTitle = () => {
+    const classes = classNames(`${prefix}-alert__title`, {
+      "is-bold": hasChildren,
+    });
+    return (
+      <>
+        <div className={classes}>{props.message}</div>
+        {hasChildren ? renderDescription() : null}
+      </>
+    );
+  };
+
+  const renderDescription = () => {
+    const childrenElement = children as React.ReactElement;
+    return React.Children.map(childrenElement, (child, index) => {
+      if (!React.isValidElement(child)) {
+        return child;
+      } else {
+        // 这里直接非React元素 比如string/number 并不会经过babel转译 cloneElement会报错丢失type
+        return React.cloneElement(child, {
+          key: index,
+        });
+      }
+    });
+  };
+
+  return !isShow ? null : (
+    <div className={classes} ref={ref}>
+      {showIcon && renderIcon()}
+
+      <div className={`${prefix}-alert__content`}>{renderTitle()}</div>
+
+      {showClose ? (
+        <div className={`${prefix}-alert__description`}>{renderClose()}</div>
+      ) : null}
+    </div>
+  );
+});
 
 export default Alert;

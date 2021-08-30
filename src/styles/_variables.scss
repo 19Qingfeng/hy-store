@@ -1,5 +1,5 @@
-$prefix: 'hy';
-$namespace: 'hy';
+$prefix: "hy";
+$namespace: "hy";
 
 $white: #fff !default;
 $gray-100: #f8f9fa !default;
@@ -17,10 +17,10 @@ $blue: #0d6efd !default;
 $indigo: #6610f2 !default;
 $purple: #6f42c1 !default;
 $pink: #d63384 !default;
-$red: #dc3545 !default;
+$red: #fff2f0 !default;
 $orange: #fd7e14 !default;
 $yellow: #fadb14 !default;
-$green: #52c41a !default;
+$green: #d6f4e4 !default;
 $teal: #20c997 !default;
 $cyan: #17a2b8 !default;
 
@@ -33,22 +33,29 @@ $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-800 !default;
 
-$theme-colors: (
-  'primary': $primary,
-  'secondary': $secondary,
-  'success': $success,
-  'info': $info,
-  'warning': $warning,
-  'danger': $danger,
-  'light': $light,
-  'dark': $dark,
-);
+// icons
+$primary-icon-color: #e6f7ff !default;
+$success-icon-color: #52c41a !default;
+$info-icon-color: $info !default;
+$warning-icon-color: #fffbe6 !default;
+$danger-icon-color: #ff4d4f !default;
 
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
-  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+) !default;
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
-  'Liberation Mono', 'Courier New', monospace !default;
+  "Liberation Mono", "Courier New", monospace !default;
 $font-family-base: $font-family-sans-serif !default;
 
 // 字体大小

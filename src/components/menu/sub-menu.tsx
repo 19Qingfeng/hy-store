@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
-import classNames from 'classnames';
-import Icon from '../icon';
-import { MenuContext } from './menu';
-import { MenuItemProps } from './menu-item';
-import Transition from '../transiton';
+import React, { useState, useContext } from "react";
+import classNames from "classnames";
+import Icon from "../icon";
+import { MenuContext } from "./menu";
+import { MenuItemProps } from "./menu-item";
+import Transition from "../transiton";
 
 export interface SumMenuProps {
   index?: string;
@@ -11,7 +11,7 @@ export interface SumMenuProps {
   className?: string;
 }
 
-const prefix = 'hy';
+const prefix = "hy";
 
 const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   // props
@@ -25,8 +25,8 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   const classes = classNames(
     `${prefix}-menu-item`,
     `${prefix}-submenu-item`,
-    { 'is-open': menuOpen },
-    { 'is-vertical': mode === 'vertical' },
+    { "is-open": menuOpen },
+    { "is-vertical": mode === "vertical" },
     className
   );
   // methods
@@ -45,13 +45,13 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   };
 
   const clickEvents =
-    trigger === 'click'
+    trigger === "click"
       ? {
           onClick: handleClick,
         }
       : {};
   const hoverEvents =
-    trigger === 'hover'
+    trigger === "hover"
       ? {
           onMouseEnter: (e: React.MouseEvent) => handleMouse(e, true),
           onMouseLeave: (e: React.MouseEvent) => handleMouse(e, false),
@@ -60,12 +60,12 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
 
   const renderChildren = () => {
     const subMenuClasses = classNames(`${prefix}-submenu`, {
-      'menu-opened': menuOpen,
+      "menu-opened": menuOpen,
     });
     const childrenComponent = React.Children.map(children, (child, i) => {
       const childElement =
         child as React.FunctionComponentElement<MenuItemProps>;
-      if (childElement.type.displayName === 'MenuItem') {
+      if (childElement.type.displayName === "MenuItem") {
         return React.cloneElement(childElement, {
           index: childElement.props.index
             ? childElement.props.index
@@ -73,7 +73,7 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
         });
       } else {
         console.warn(
-          'Warning: subMenu has a child which is not a MenuItem Component.'
+          "Warning: subMenu has a child which is not a MenuItem Component."
         );
       }
     });
@@ -92,6 +92,6 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
   );
 };
 
-SubMenuItem.displayName = 'SubMenu';
+SubMenuItem.displayName = "SubMenu";
 
 export default SubMenuItem;
