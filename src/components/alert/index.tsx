@@ -5,7 +5,7 @@ import { isValidValue } from "../../utils";
 
 type AlertType = "primary" | "success" | "info" | "warning" | "danger";
 
-interface AlertProps {
+export interface AlertProps {
   message: React.ReactNode; // 消息提示内容
   className?: string;
   showClose?: boolean;
@@ -28,8 +28,8 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
   const {
     className,
     type = "info",
-    showIcon = true,
-    showClose = true,
+    showIcon = false,
+    showClose = false,
     children,
   } = props;
   const [isShow, setShow] = useState(true);
@@ -52,7 +52,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
       "is-scale": hasChildren,
     });
     return (
-      <div className={classes}>
+      <div className={classes} data-testid="icon">
         <Icon className={`${prefix}-alert__svg`} icon={currentIcon}></Icon>
       </div>
     );
@@ -95,7 +95,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
   };
 
   return !isShow ? null : (
-    <div className={classes} ref={ref}>
+    <div data-testid="alert" className={classes} ref={ref}>
       {showIcon && renderIcon()}
 
       <div className={`${prefix}-alert__content`}>{renderTitle()}</div>
