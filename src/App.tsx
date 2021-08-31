@@ -34,6 +34,7 @@ export default function App() {
           <SubMenu title="顶部">
             <MenuItem>sub 1</MenuItem>
           </SubMenu>
+          submenu
           <MenuItem>第一个MenuItem</MenuItem>
           <MenuItem>第二个MenuItem</MenuItem>
           <MenuItem disabled>第二个MenuItem Disable</MenuItem>

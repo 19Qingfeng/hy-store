@@ -1,9 +1,9 @@
-import classNames from 'classnames';
-import React, { createContext, useState } from 'react';
-import { MenuItemProps } from './menu-item';
+import classNames from "classnames";
+import React, { createContext, useState } from "react";
+import { MenuItemProps } from "./menu-item";
 
-type MenuMode = 'horizontal' | 'vertical';
-type MenuTriggerWay = 'hover' | 'click';
+type MenuMode = "horizontal" | "vertical";
+type MenuTriggerWay = "hover" | "click";
 type SelectFn = (index: string) => void;
 export interface MenuProps {
   activeIndex?: string;
@@ -23,12 +23,12 @@ export interface IMenuContext {
   onSelect?: SelectFn;
 }
 
-const prefix = 'hy';
+const prefix = "hy";
 
 export const MenuContext = createContext<IMenuContext>({
-  activeIndex: '0',
-  trigger: 'hover',
-  mode: 'horizontal',
+  activeIndex: "0",
+  trigger: "hover",
+  mode: "horizontal",
 });
 
 const Menu: React.FC<MenuProps> = (props) => {
@@ -44,14 +44,14 @@ const Menu: React.FC<MenuProps> = (props) => {
   } = props;
   const [active, setActive] = useState(activeIndex);
   const classes = classNames(`${prefix}-menu`, className, {
-    [`${prefix}-menu__vertical`]: mode === 'vertical',
-    [`${prefix}-menu__horizontal`]: mode === 'horizontal',
+    [`${prefix}-menu__vertical`]: mode === "vertical",
+    [`${prefix}-menu__horizontal`]: mode === "horizontal",
   });
   const transmitContext: IMenuContext = {
-    activeIndex: active === undefined ? '0' : active,
-    trigger: trigger ? trigger : 'hover',
+    activeIndex: active === undefined ? "0" : active,
+    trigger: trigger ? trigger : "hover",
     defaultSubExtend,
-    mode: mode ? mode : 'horizontal',
+    mode: mode ? mode : "horizontal",
     onSelect: (index) => {
       setActive(index);
       if (onSelect) {
@@ -64,8 +64,8 @@ const Menu: React.FC<MenuProps> = (props) => {
       const childrenElement =
         child as React.FunctionComponentElement<MenuItemProps>;
       if (
-        childrenElement.type.displayName === 'MenuItem' ||
-        childrenElement.type.displayName === 'SubMenu'
+        childrenElement?.type?.displayName === "MenuItem" ||
+        childrenElement?.type?.displayName === "SubMenu"
       ) {
         // React中元素是不可变的 变化元素只能新建一个元素去替换
         return React.cloneElement(childrenElement, {
@@ -76,7 +76,7 @@ const Menu: React.FC<MenuProps> = (props) => {
       } else {
         // nothing
         console.warn(
-          'Warning: menu has a child which is not a MenuItem Component.'
+          "Warning: menu has a child which is not a MenuItem Component."
         );
       }
     });
@@ -93,7 +93,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 export default Menu;
 
 Menu.defaultProps = {
-  mode: 'horizontal',
-  activeIndex: '0',
-  trigger: 'hover',
+  mode: "horizontal",
+  activeIndex: "0",
+  trigger: "hover",
 };
