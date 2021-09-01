@@ -5,6 +5,8 @@ import MenuItem from "./components/menu/menu-item";
 import SubMenu from "./components/menu/sub-menu";
 import Icon from "./components/icon";
 import Alert from "./components/alert";
+import Row from "./components/grid/row";
+import Col from "./components/grid/column";
 
 import { useEffect, useRef } from "react";
 
@@ -16,6 +18,17 @@ export default function App() {
   });
   return (
     <div>
+      <Row gap={20} justify="end">
+        <Col span={2} offset={2} sm={10}>
+          <div style={{ background: "red" }}>第一行</div>
+        </Col>
+        <Col span={2} offset={10}>
+          <div style={{ background: "blue" }}>第二行</div>
+        </Col>
+        <Col span={6}>
+          <div style={{ background: "yellow" }}>第三行</div>
+        </Col>
+      </Row>
       <div>
         <Alert message="hello world" type="success">
           <div>你好,世界</div>

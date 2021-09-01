@@ -1,3 +1,16 @@
+// 横向对其方式
+$justify: (
+  "start": flex-start,
+  "end": flex-end,
+  "center": center,
+);
+
 @include b("row") {
   display: flex;
+  flex-wrap: wrap;
+  @each $key, $value in $justify {
+    @include when($key) {
+      justify-content: $value;
+    }
+  }
 }

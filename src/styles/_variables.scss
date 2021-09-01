@@ -1,5 +1,9 @@
 $prefix: "hy";
+/* BEM */
 $namespace: "hy";
+$element-separator: "__";
+$modifier-separator: "--";
+$state-prefix: "is-";
 
 $white: #fff !default;
 $gray-100: #f8f9fa !default;

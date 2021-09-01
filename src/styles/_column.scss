@@ -1,0 +1,21 @@
+$prefix: "hy";
+$line_count: 24;
+$i: 24;
+
+@include b("col") {
+  @for $i from 0 through 24 {
+    @if $i == 0 {
+      &-#{$i} {
+        display: none;
+      }
+    } @else {
+      &-#{$i} {
+        display: block;
+        width: percentage(($i / $line_count));
+      }
+      &-offset--#{$i} {
+        margin-left: ($i / 24) * 100 * 1%;
+      }
+    }
+  }
+}
