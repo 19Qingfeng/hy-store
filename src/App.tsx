@@ -14,8 +14,9 @@ import { useEffect, useRef, useState } from "react";
 export default function App() {
   // button
   const buttonRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    console.log(buttonRef, "buttonRef");
+    inputRef.current!.focus();
   });
   const [value, setValue] = useState<string | undefined>();
   console.log(value, "value");
@@ -23,11 +24,20 @@ export default function App() {
     <div>
       <div style={{ padding: "10px" }}>
         <Input
+          disabled
+          prefix="user"
           value={value}
           defaultValue={10}
           onChange={(e) => setValue(e.target.value)}
         />
-        {value}
+        <Input
+          suffix="clock"
+          ref={inputRef}
+          style={{ marginLeft: "20px" }}
+          value={value}
+          defaultValue={10}
+          onChange={(e) => setValue(e.target.value)}
+        />
       </div>
       <Row gap={20} justify="end">
         <Col span={2} xs={24} sm={12} md={24} lg={12} xl={24}>

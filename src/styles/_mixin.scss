@@ -108,3 +108,16 @@
     transform-origin: $origin;
   }
 }
+
+@mixin hoverInput(
+  $color: $input-border-color,
+  $hover-color: $input-hover-color
+) {
+  border-color: $color;
+  &:focus {
+    border-color: $hover-color;
+  }
+  &:hover {
+    border-color: $hover-color;
+  }
+}

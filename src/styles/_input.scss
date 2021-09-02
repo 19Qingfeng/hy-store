@@ -1,0 +1,53 @@
+@include b("input") {
+  display: inline-block;
+
+  .#{$namespace}-input__inner {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
+    font-size: 14px;
+    border: 1px solid $input-border-color;
+    @include hoverInput;
+  }
+
+  // 通用icon
+  &__icon {
+    position: absolute;
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    top: 0;
+  }
+  // 前置icon
+  &__prefix {
+    position: relative;
+    .#{$namespace}-input__prefix-icon {
+      position: absolute;
+      left: 0;
+    }
+    .#{$namespace}-input__inner {
+      padding-left: 40px;
+    }
+  }
+  // 后置icon
+  &__suffix {
+    position: relative;
+    .#{$namespace}-input__suffix-icon {
+      right: 0;
+    }
+    .#{$namespace}-input__inner {
+      padding-right: 40px;
+    }
+  }
+}
+
+@include when("disabled") {
+  cursor: not-allowed;
+  .#{$namespace}-input__inner {
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: $input-disabled-bg-color;
+    border-color: none;
+  }
+}
