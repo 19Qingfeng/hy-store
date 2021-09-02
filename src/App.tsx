@@ -7,8 +7,9 @@ import Icon from "./components/icon";
 import Alert from "./components/alert";
 import Row from "./components/grid/row";
 import Col from "./components/grid/column";
+import Input from "./components/input";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function App() {
   // button
@@ -16,8 +17,18 @@ export default function App() {
   useEffect(() => {
     console.log(buttonRef, "buttonRef");
   });
+  const [value, setValue] = useState<string | undefined>();
+  console.log(value, "value");
   return (
     <div>
+      <div style={{ padding: "10px" }}>
+        <Input
+          value={value}
+          defaultValue={10}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        {value}
+      </div>
       <Row gap={20} justify="end">
         <Col span={2} xs={24} sm={12} md={24} lg={12} xl={24}>
           <div style={{ background: "red" }}>第一行</div>
