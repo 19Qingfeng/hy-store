@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div>
       <Row gap={20} justify="end">
-        <Col span={2} offset={2} sm={10}>
+        <Col span={2} xs={24} sm={12} md={24} lg={12} xl={24}>
           <div style={{ background: "red" }}>第一行</div>
         </Col>
         <Col span={2} offset={10}>
