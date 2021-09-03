@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useState } from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Icon from "../icon";
 import classNames from "classnames";
-interface InputProps
+export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
   prefix?: IconProp;
   suffix?: IconProp;
@@ -59,6 +59,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const renderPrefix = () => {
     return (
       <span
+        data-testid="prefix-icon"
         className={`${NAMESPACE}-input__icon ${NAMESPACE}-input__prefix-icon`}
       >
         <Icon icon={prefix!}></Icon>
@@ -69,6 +70,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const renderSuffix = () => {
     return (
       <span
+        data-testid="suffix-icon"
         className={`${NAMESPACE}-input__icon ${NAMESPACE}-input__suffix-icon`}
       >
         <Icon icon={suffix!}> </Icon>
