@@ -49,7 +49,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   };
 
   const renderTemplate = (value: AutoCompleteOptionsType) => {
-    return renderOptions ? renderOptions(value) : value;
+    return renderOptions ? renderOptions(value) : value.value;
   };
 
   return (
