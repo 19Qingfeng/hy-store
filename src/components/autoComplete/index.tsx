@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useState } from 'react';
-import Input, { InputProps } from '../input';
+import React, { ChangeEvent, useState } from "react";
+import { Input, InputProps } from "../input";
 
-export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
+export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
   fetchSuggestion: (value: string) => string[];
   onSelect: (value: string) => void;
 }

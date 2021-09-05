@@ -90,7 +90,7 @@ const Menu: React.FC<MenuProps> = (props) => {
   );
 };
 
-export default Menu;
+export { Menu };
 
 Menu.defaultProps = {
   mode: "horizontal",

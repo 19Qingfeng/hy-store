@@ -12,6 +12,9 @@ type TransitionProps = CSSTransitionProps & {
   animationName?: AnimationNameProps;
 };
 
+/**
+ * 内置过度动画组件
+ */
 const Transition: React.FC<TransitionProps> = (props) => {
   const { children, animationName, classNames, wrapper, ...rest } = props;
   return (
@@ -24,7 +27,7 @@ const Transition: React.FC<TransitionProps> = (props) => {
   );
 };
 
-export default Transition;
+export { Transition };
 
 Transition.defaultProps = {
   appear: true,
