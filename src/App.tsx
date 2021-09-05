@@ -10,7 +10,7 @@ import { Col } from "./components/grid/column";
 import { Input } from "./components/input";
 
 import { useEffect, useRef, useState } from "react";
-import AutoComplete from "./components/autoComplete";
+import { AutoComplete } from "./components/autoComplete";
 
 export default function App() {
   // button
