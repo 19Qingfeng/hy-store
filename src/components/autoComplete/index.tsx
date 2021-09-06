@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { Input, InputProps } from "../input";
+import { Icon } from "../icon";
 
 export interface AutoCompleteOptionsType {
   value: string;
@@ -8,9 +9,11 @@ export interface AutoCompleteOptionsType {
 
 export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
   /**
-   * 返回输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它
+   * 返回输入建议的方法，返回一直数组或者Promise
    */
-  fetchSuggestion: (value: string) => AutoCompleteOptionsType[];
+  fetchSuggestion: (
+    value: string
+  ) => AutoCompleteOptionsType[] | Promise<AutoCompleteOptionsType[]>;
   /**
    * 选中输入建议回调函数
    */
@@ -25,6 +28,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   const { fetchSuggestion, onSelect, renderOptions, ...rest } = props;
 
   // 当输入值的时候 我需要实时拿到这个值 controlled
+  const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState<string>();
   const [suggestions, setSuggestions] = useState<AutoCompleteOptionsType[]>();
 
@@ -33,8 +37,16 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     setInputValue(value);
     if (value) {
       // 新的值存在 进行刷新列表过滤
-      const list = fetchSuggestion(value);
-      setSuggestions(list);
+      const result = fetchSuggestion(value);
+      if (result instanceof Promise) {
+        setLoading(true);
+        result.then((res) => {
+          setLoading(false);
+          setSuggestions(res);
+        });
+      } else {
+        setSuggestions(result);
+      }
     } else {
       setSuggestions([]);
     }
@@ -56,6 +68,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     <div>
       <Input value={inputValue} onChange={handleChange} {...rest}></Input>
       <ul>
+        {loading && <Icon className="fa-spin" icon="spinner"></Icon>}
         {suggestions?.map((item, index) => {
           return (
             <li onClick={() => handleClick(item)} key={index}>
