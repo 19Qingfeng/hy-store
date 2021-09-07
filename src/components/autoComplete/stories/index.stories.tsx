@@ -17,7 +17,8 @@ const Template: ComponentStory<typeof AutoComplete> = (args) => {
     );
   };
   const onSelect = (value: string) => {
-    window.open(value);
+    // window.open(value);
+    console.log(value, "选中value");
   };
   const fetchSuggestion = (value: string) => {
     return new Promise<AutoCompleteOptionsType[]>((resolve) => {
