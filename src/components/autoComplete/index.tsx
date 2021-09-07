@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Input, InputProps } from "../input";
 import { Icon } from "../icon";
+import useDebounce from "../../hooks/use-debounce";
 
 export interface AutoCompleteOptionsType {
   value: string;
@@ -8,6 +9,10 @@ export interface AutoCompleteOptionsType {
 }
 
 export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
+  /**
+   * 搜索框debounce时间，默认300ms.
+   */
+  debounceTime?: number;
   /**
    * 返回输入建议的方法，返回一直数组或者Promise
    */
@@ -25,19 +30,23 @@ export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
-  const { fetchSuggestion, onSelect, renderOptions, ...rest } = props;
+  const {
+    fetchSuggestion,
+    onSelect,
+    debounceTime = 300,
+    renderOptions,
+    ...rest
+  } = props;
 
-  // 当输入值的时候 我需要实时拿到这个值 controlled
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState<string>();
   const [suggestions, setSuggestions] = useState<AutoCompleteOptionsType[]>();
+  const debounceValue = useDebounce(inputValue, debounceTime);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    if (value) {
-      // 新的值存在 进行刷新列表过滤
-      const result = fetchSuggestion(value);
+  // effect
+  useEffect(() => {
+    if (inputValue) {
+      const result = fetchSuggestion(inputValue);
       if (result instanceof Promise) {
         setLoading(true);
         result.then((res) => {
@@ -50,6 +59,11 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     } else {
       setSuggestions([]);
     }
+  }, [debounceValue]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
   };
 
   const handleClick = (value: AutoCompleteOptionsType) => {
@@ -79,6 +93,10 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
       </ul>
     </div>
   );
+};
+
+AutoComplete.defaultProps = {
+  debounceTime: 300,
 };
 
 export { AutoComplete };
