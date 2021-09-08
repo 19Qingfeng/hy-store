@@ -11,9 +11,8 @@
     top: $autocomplete-list-top;
     left: $autocomplete-list-left;
     background: $autocomplete-list-bg;
-    min-width: $autocomplete-list-min-width;
-    min-height: $autocomplete-list-min-height;
-    max-height: $autocomplete-list-max-height;
+    width: $autocomplete-list-width;
+    height: $autocomplete-list-height;
     overflow-y: auto;
     border-radius: $autocomplete-list-border-radius;
     border: $autocomplete-list-border;

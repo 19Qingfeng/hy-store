@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof AutoComplete> = (args) => {
         <div style={{ color: "#666" }}>仓库名称:{value.name}</div>
         <div
           className="autocomplete-el"
-          style={{ fontSize: "12px", color: "#38387b" }}
+          style={{ fontSize: "12px", color: "#38387b", whiteSpace: "nowrap" }}
         >
           仓库地址:{value.value}
         </div>

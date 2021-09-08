@@ -10,8 +10,8 @@ import { Input, InputProps } from "../input";
 import { Icon } from "../icon";
 import useDebounce from "../../hooks/use-debounce";
 import useOutside from "../../hooks/use-outside";
+import { Transition } from "../transiton";
 
-// TODO: 键盘滚动事件同时menu也应该滚动
 // TODO: test case
 const nameSpace = "hy";
 
@@ -23,9 +23,17 @@ export interface AutoCompleteOptionsType {
 // TODO 支持点击外层关闭
 export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
   /**
+   * 自定义建议宽度
+   */
+  width?: number;
+  /**
    * 自定义类名
    */
   className?: string;
+  /**
+   * 自定义AutoComplete Suggestion list样式
+   */
+  style?: React.CSSProperties;
   /**
    * 搜索框debounce时间，默认300ms.
    */
@@ -51,6 +59,8 @@ export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
  */
 const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   const {
+    style,
+    width = 300,
     fetchSuggestion,
     onSelect,
     className,
@@ -63,6 +73,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
 
   const triggerSearch = useRef(false);
   const componentRef = useRef<HTMLDivElement>(null);
+  const suggestionItemRef = useRef<HTMLLIElement>(null);
   const [activeIndex, setActive] = useState(-1);
   const [shouldRender, setRender] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -77,6 +88,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   useEffect(() => {
     if (inputValue && triggerSearch.current) {
       setRender(true);
+      setSuggestions([]);
       const result = fetchSuggestion(inputValue);
       if (result instanceof Promise) {
         setLoading(true);
@@ -97,9 +109,11 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     const code = event.code;
     switch (code) {
       case "ArrowDown":
+        event.preventDefault();
         toggleMenuItem("next");
         break;
       case "ArrowUp":
+        event.preventDefault();
         toggleMenuItem("pre");
         break;
       case "Escape":
@@ -137,21 +151,45 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
 
   // 关闭搜索弹窗
   const handleCloseSuggestion = () => {
+    setRender(false);
+  };
+
+  // 动画结束后
+  const handleAnimationExited = () => {
     setSuggestions([]);
-    setRender(false); // 关闭渲染
   };
 
   // 键盘切换MenuItem
   const toggleMenuItem = (direction: "next" | "pre") => {
+    let index;
     if (direction === "next") {
-      const index =
+      index =
         activeIndex === suggestions?.length! - 1
           ? suggestions?.length! - 1
           : activeIndex + 1;
       setActive(index);
     } else {
-      const index = activeIndex === 0 ? 0 : activeIndex - 1;
+      index = activeIndex === 0 ? 0 : activeIndex - 1;
       setActive(index);
+    }
+    const suggestionWrapperRef = componentRef.current?.querySelector(
+      `.${nameSpace}-autocomplete__list`
+    );
+    const suggestionRefs = componentRef.current?.querySelectorAll<HTMLLIElement>(
+      `li.${nameSpace}-autocomplete__item`
+    );
+    if (suggestionWrapperRef && suggestionRefs && suggestionRefs.length > 0) {
+      const hightItemEl = suggestionRefs[index];
+      const { scrollTop, clientHeight } = suggestionWrapperRef; // 当前wrapper滚动距离
+      const { scrollHeight, offsetTop } = hightItemEl; // 每一个元素的高度 外部传入都不一定所以单个都要计算
+      const currentElTop = offsetTop + scrollHeight; // 元素底部距离 parent顶部位置
+      const screenMaxHeight = scrollTop + clientHeight; // 当前屏幕所在最大高度
+      if (currentElTop > screenMaxHeight) {
+        suggestionWrapperRef.scrollTop += scrollHeight;
+      }
+      if (offsetTop < scrollTop) {
+        suggestionWrapperRef.scrollTop -= scrollHeight;
+      }
     }
   };
 
@@ -161,7 +199,10 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
 
   const renderSuggestion = () => {
     return (
-      <ul className={`${nameSpace}-autocomplete__list`}>
+      <ul
+        className={`${nameSpace}-autocomplete__list`}
+        style={{ width: width + "px", ...style }}
+      >
         {loading && (
           <span className={`${nameSpace}-autocomplete__icon`}>
             <Icon className="fa-spin" icon="spinner"></Icon>
@@ -175,6 +216,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
             <li
               className={classes}
               onClick={() => handleClick(item)}
+              ref={suggestionItemRef}
               key={index}
             >
               {renderTemplate(item)}
@@ -190,11 +232,20 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
       <Input
         className={`${nameSpace}-autocomplete__input`}
         value={inputValue}
+        style={{ width: width + "px" }}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         {...rest}
       ></Input>
-      {shouldRender && renderSuggestion()}
+      <Transition
+        in={shouldRender}
+        timeout={300}
+        animationName="zoom-in-top"
+        onExited={handleAnimationExited}
+        unmountOnExit
+      >
+        {renderSuggestion()}
+      </Transition>
     </div>
   );
 };
