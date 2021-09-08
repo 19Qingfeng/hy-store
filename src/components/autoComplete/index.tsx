@@ -11,6 +11,10 @@ import { Icon } from "../icon";
 import useDebounce from "../../hooks/use-debounce";
 import useOutside from "../../hooks/use-outside";
 
+// TODO: 键盘滚动事件同时menu也应该滚动
+// TODO: test case
+const nameSpace = "hy";
+
 export interface AutoCompleteOptionsType {
   value: string;
   [props: string]: string;
@@ -18,6 +22,10 @@ export interface AutoCompleteOptionsType {
 
 // TODO 支持点击外层关闭
 export interface AutoCompleteProps extends Omit<InputProps, "onSelect"> {
+  /**
+   * 自定义类名
+   */
+  className?: string;
   /**
    * 搜索框debounce时间，默认300ms.
    */
@@ -45,14 +53,18 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   const {
     fetchSuggestion,
     onSelect,
+    className,
     debounceTime = 300,
     renderOptions,
     ...rest
   } = props;
 
+  const classes = classNames(`${nameSpace}-autocomplete`, className);
+
   const triggerSearch = useRef(false);
   const componentRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActive] = useState(-1);
+  const [shouldRender, setRender] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState<string>();
   const [suggestions, setSuggestions] = useState<AutoCompleteOptionsType[]>([]);
@@ -64,20 +76,21 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   // effect
   useEffect(() => {
     if (inputValue && triggerSearch.current) {
+      setRender(true);
       const result = fetchSuggestion(inputValue);
       if (result instanceof Promise) {
         setLoading(true);
         result.then((res) => {
-          setLoading(false);
-          setSuggestions(res);
+          setLoading(false); // 关闭loading
+          setSuggestions(res); // 回填结果
         });
       } else {
-        setSuggestions(result);
+        setSuggestions(result); // 回填结果
       }
     } else {
-      handleCloseSuggestion();
+      handleCloseSuggestion(); // 清空value-关闭清空弹窗
     }
-    setActive(-1);
+    setActive(-1); // 每次搜索重置index
   }, [debounceValue]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -125,6 +138,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
   // 关闭搜索弹窗
   const handleCloseSuggestion = () => {
     setSuggestions([]);
+    setRender(false); // 关闭渲染
   };
 
   // 键盘切换MenuItem
@@ -145,18 +159,16 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     return renderOptions ? renderOptions(value) : value.value;
   };
 
-  return (
-    <div ref={componentRef}>
-      <Input
-        value={inputValue}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        {...rest}
-      ></Input>
-      <ul>
-        {loading && <Icon className="fa-spin" icon="spinner"></Icon>}
-        {suggestions?.map((item, index) => {
-          const classes = classNames({
+  const renderSuggestion = () => {
+    return (
+      <ul className={`${nameSpace}-autocomplete__list`}>
+        {loading && (
+          <span className={`${nameSpace}-autocomplete__icon`}>
+            <Icon className="fa-spin" icon="spinner"></Icon>
+          </span>
+        )}
+        {suggestions.map((item, index) => {
+          const classes = classNames(`${nameSpace}-autocomplete__item`, {
             "is-active": index === activeIndex,
           });
           return (
@@ -170,6 +182,19 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
           );
         })}
       </ul>
+    );
+  };
+
+  return (
+    <div className={classes} ref={componentRef}>
+      <Input
+        className={`${nameSpace}-autocomplete__input`}
+        value={inputValue}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        {...rest}
+      ></Input>
+      {shouldRender && renderSuggestion()}
     </div>
   );
 };

@@ -1,3 +1,43 @@
-.is-active {
-  color: blue;
+@include b("autocomplete") {
+  position: relative;
+  margin: 0;
+  // 输入框
+  &__input {
+    height: $autocomplete-input-height;
+  }
+  // suggestion list
+  &__list {
+    position: absolute;
+    top: $autocomplete-list-top;
+    left: $autocomplete-list-left;
+    background: $autocomplete-list-bg;
+    min-width: $autocomplete-list-min-width;
+    min-height: $autocomplete-list-min-height;
+    max-height: $autocomplete-list-max-height;
+    overflow-y: auto;
+    border-radius: $autocomplete-list-border-radius;
+    border: $autocomplete-list-border;
+    box-shadow: $autocomplete-list-box-shadow;
+    list-style: none;
+    padding: $autocomplete-list-padding;
+  }
+  &__item {
+    min-height: 20px;
+    line-height: $autocomplete-list-item-line-height;
+    padding: $autocomplete-list-item-padding;
+    margin: 0;
+    cursor: pointer;
+    @include when("active") {
+      background: $autocomplete-list-item-hover-color;
+    }
+    &:hover {
+      background: $autocomplete-list-item-selected-color;
+    }
+  }
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

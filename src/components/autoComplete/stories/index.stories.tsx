@@ -1,5 +1,6 @@
 import { AutoComplete, AutoCompleteOptionsType } from "..";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
+import "./index.scss";
 
 export default {
   title: "Components/AutoComplete",
@@ -11,13 +12,17 @@ const Template: ComponentStory<typeof AutoComplete> = (args) => {
   const renderOptions = (value: AutoCompleteOptionsType) => {
     return (
       <div>
-        <h1>仓库名称:{value.name}</h1>
-        <p>仓库地址:{value.value}</p>
+        <div style={{ color: "#666" }}>仓库名称:{value.name}</div>
+        <div
+          className="autocomplete-el"
+          style={{ fontSize: "12px", color: "#38387b" }}
+        >
+          仓库地址:{value.value}
+        </div>
       </div>
     );
   };
   const onSelect = (value: string) => {
-    // window.open(value);
     console.log(value, "选中value");
   };
   const fetchSuggestion = (value: string) => {
@@ -37,7 +42,10 @@ const Template: ComponentStory<typeof AutoComplete> = (args) => {
     });
   };
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div
+      className="autocomplete-wrapper"
+      style={{ display: "flex", alignItems: "center" }}
+    >
       远程搜索Github仓库:
       <AutoComplete
         onSelect={onSelect}
