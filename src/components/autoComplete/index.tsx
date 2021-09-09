@@ -17,7 +17,7 @@ const nameSpace = "hy";
 
 export interface AutoCompleteOptionsType {
   value: string;
-  [props: string]: string;
+  [props: string]: string | number;
 }
 
 // TODO 支持点击外层关闭
@@ -204,7 +204,10 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
         style={{ width: width + "px", ...style }}
       >
         {loading && (
-          <span className={`${nameSpace}-autocomplete__icon`}>
+          <span
+            data-testid="icon"
+            className={`${nameSpace}-autocomplete__icon`}
+          >
             <Icon className="fa-spin" icon="spinner"></Icon>
           </span>
         )}

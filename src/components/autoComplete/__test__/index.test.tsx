@@ -4,6 +4,7 @@ import {
   fireEvent,
   waitFor,
   cleanup,
+  act,
 } from "@testing-library/react";
 import { AutoComplete, AutoCompleteProps } from "../index";
 import { config } from "react-transition-group";
@@ -34,17 +35,15 @@ const withRenderOptionsProps: AutoCompleteProps = {
     return <div>name:{item.value}</div>;
   },
 };
-
-const asyncSuggestionProps: AutoCompleteProps = {
-  placeholder: "autocomplete",
-  fetchSuggestion: jest.fn((queryValue) => {
+/* 
+(queryValue) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([{ name: queryValue, value: "1" }]);
       }, 3000);
     });
-  }),
-};
+  }
+*/
 
 let wrapper: RenderResult;
 let completeElement: HTMLInputElement;
@@ -142,27 +141,35 @@ describe("Test AutoComplete Component", () => {
 
   test("render the remote return data when fetchSuggestion return a promise", async () => {
     cleanup();
-    // jest.useFakeTimers();
+    jest.useFakeTimers();
+    // https://stackoverflow.com/questions/65092376/jest-fn-returns-undefined-when-called
+    // resetMocks create-react-app 默认为true 会导致每个case开始前清除对应所有的mock实现
+    // 解决方法: 要么jest.config.js中关闭resetMocks 要么将mock实际逻辑写在case内
+    const asyncSuggestionProps: AutoCompleteProps = {
+      placeholder: "autocomplete",
+      onSelect: jest.fn(),
+      fetchSuggestion: jest.fn((value) => {
+        return new Promise((resolve) => {
+          resolve([{ value }]);
+        });
+      }),
+    };
     wrapper = render(renderDefaultEl(asyncSuggestionProps));
     completeElement = wrapper.getByPlaceholderText(
       "autocomplete"
     ) as HTMLInputElement;
-    console.log(
-      asyncSuggestionProps.fetchSuggestion("1"),
-      "asyncSuggestionProps"
-    );
-
-    // 输入一个a的时候 首先出入loading
     fireEvent.change(completeElement, {
       target: {
-        value: "a",
+        value: "wang.haoyu",
       },
     });
-    // 希望调用远程请求函数
-    // 希望loading出现
     await waitFor(() => {
-      // expect(asyncSuggestionProps.fetchSuggestion).toHaveBeenCalledWith("a");
       expect(wrapper.queryByTestId("icon")).toBeInTheDocument();
     });
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(wrapper.queryByTestId("icon")).not.toBeInTheDocument();
+    expect(wrapper.queryByText("wang.haoyu")).toBeInTheDocument();
   });
 });
