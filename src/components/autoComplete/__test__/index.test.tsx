@@ -35,15 +35,6 @@ const withRenderOptionsProps: AutoCompleteProps = {
     return <div>name:{item.value}</div>;
   },
 };
-/* 
-(queryValue) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([{ name: queryValue, value: "1" }]);
-      }, 3000);
-    });
-  }
-*/
 
 let wrapper: RenderResult;
 let completeElement: HTMLInputElement;
