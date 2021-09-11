@@ -4,7 +4,17 @@ import { Upload } from "../index";
 export default {
   title: "Components/Upload",
   component: Upload,
-  argTypes: {},
+  argTypes: {
+    onSuccess: {
+      action: "onSuccess",
+    },
+    onProgress: {
+      action: "onProgress",
+    },
+    onError: {
+      action: "onError",
+    },
+  },
 } as ComponentMeta<typeof Upload>;
 
 const Template: ComponentStory<typeof Upload> = (args) => (
@@ -23,6 +33,16 @@ Primary.args = {
   },
   onError: (error, file) => {
     console.log("出现错误了", error, file);
+  },
+  onChange: (status, file) => {
+    console.log("文件状态改变:", status);
+    console.log("文件:", file);
+  },
+  beforeUpload: (file) => {
+    const newFile = new File([file], "wang.haoyu", {
+      type: file.type,
+    });
+    return Promise.resolve(newFile);
   },
 };
 
