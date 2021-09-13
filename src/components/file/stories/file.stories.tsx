@@ -26,17 +26,17 @@ export const Primary = Template.bind({});
 Primary.args = {
   action: "https://jsonplaceholder.typicode.com/posts",
   onSuccess: (response, file) => {
-    console.log("上传成功了", response, file);
+    // console.log("上传成功了", response, file);
   },
   onProgress: (percentage, file) => {
-    console.log("上传进度", percentage, file);
+    // console.log("上传进度", percentage, file);
   },
   onError: (error, file) => {
-    console.log("出现错误了", error, file);
+    // console.log("出现错误了", error, file);
   },
   onChange: (status, file) => {
-    console.log("文件状态改变:", status);
-    console.log("文件:", file);
+    // console.log("文件状态改变:", status);
+    // console.log("文件:", file);
   },
   beforeUpload: (file) => {
     const newFile = new File([file], "wang.haoyu", {

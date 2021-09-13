@@ -1,9 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../button/button";
 import classNames from "classnames";
 import { http } from "./ajax";
 
-type FileStatus = "rejected" | "uploading" | "error" | "success";
+type FileStatus = "ready" | "rejected" | "uploading" | "error" | "success";
+
+export interface UploadFile {
+  uid: string;
+  size: number;
+  name: string;
+  status?: FileStatus;
+  percentage?: number;
+  raw?: File;
+  responseData?: any;
+  error?: any;
+}
 
 // TODO: 上传应该XHR替换axios
 // TODO: error应该是自定义的error 而非Error
@@ -51,8 +62,26 @@ const Upload: React.FC<UploadProps> = (props) => {
     onError,
   } = props;
   const fileRef = useRef<HTMLInputElement>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const classes = classNames(`${namespace}-upload`, className);
+
+  const updateFileList = (
+    updateFile: UploadFile,
+    updateObject: Partial<UploadFile>
+  ) => {
+    setFileList((preList) => {
+      return preList.map((file) => {
+        if (file.uid === updateFile.uid) {
+          return {
+            ...file,
+            ...updateObject,
+          };
+        }
+        return file;
+      });
+    });
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -87,6 +116,15 @@ const Upload: React.FC<UploadProps> = (props) => {
   };
 
   const uploadFile = async (file: File) => {
+    const _file: UploadFile = {
+      uid: Date.now() + "hy-file",
+      status: "ready",
+      size: file.size,
+      name: file.name,
+      raw: file,
+      percentage: 0,
+    };
+    setFileList([...fileList, _file]);
     onChange && onChange("uploading", file);
     const formData = new FormData();
     formData.append(file.name, file);
@@ -97,12 +135,29 @@ const Upload: React.FC<UploadProps> = (props) => {
         },
         onUploadProgress: (e: ProgressEvent) => {
           const percentage = Math.round((e.loaded / e.total) * 100);
+          // 谨记每次渲染state和prop都是相互独立的
+          // FC中每次渲染(函数运行时)的state都是互相独立的。
+          // state中的值改变的时候 这个FC函数组件会重新运行(带着新的state)
+          // 而旧的因为这里的闭包原因 拿到的是自己内部独立的fileList 所以是[]
+          // setFileList([...])
+          updateFileList(_file, {
+            percentage,
+            status: "uploading",
+          });
           onProgress && onProgress(percentage, file);
         },
+      });
+      updateFileList(_file, {
+        status: "success",
+        responseData: responseData.data,
       });
       onSuccess && onSuccess(responseData.data, file);
       onChange && onChange("success", file);
     } catch (e) {
+      updateFileList(_file, {
+        status: "error",
+        error: e,
+      });
       onError && onError(e, file);
       onChange && onChange("error", file);
     }
@@ -115,6 +170,9 @@ const Upload: React.FC<UploadProps> = (props) => {
 
   return (
     <div className={classes}>
+      <ul>
+        <li>{fileList?.[0]?.percentage}</li>
+      </ul>
       <Button onClick={handleUpload} btnType="primary" size="sm">
         点击上传
       </Button>
