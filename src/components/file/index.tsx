@@ -85,7 +85,6 @@ const Upload: React.FC<UploadProps> = (props) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    // 先考虑单个文件上传
     if (files) {
       uploadFiles(files);
       fileRef.current!.value = "";
@@ -136,7 +135,8 @@ const Upload: React.FC<UploadProps> = (props) => {
         onUploadProgress: (e: ProgressEvent) => {
           const percentage = Math.round((e.loaded / e.total) * 100);
           // 谨记每次渲染state和prop都是相互独立的
-          // FC中每次渲染(函数运行时)的state都是互相独立的。
+          // 每次state/props改变都会重新执行渲染函数 而每一次渲染函数的作用域中state/props都是独立的 固定的常量！！！
+          // FC中每次渲染(函数运行时)的state都是互相独立的
           // state中的值改变的时候 这个FC函数组件会重新运行(带着新的state)
           // 而旧的因为这里的闭包原因 拿到的是自己内部独立的fileList 所以是[]
           // setFileList([...])

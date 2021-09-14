@@ -1,0 +1,25 @@
+@include b("progress") {
+  width: 300px;
+  &__wrapper {
+    border-radius: $progress-border-radius;
+    position: relative;
+    background-color: $progress-wrapper-bg-color;
+  }
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    border-radius: $progress-border-radius;
+  }
+  &__text {
+    font-size: 12px;
+  }
+  @each $theme, $color in $theme-colors {
+    &__inner--#{$theme} {
+      background-color: $color;
+      color: lighten($color, 30%);
+    }
+  }
+}
