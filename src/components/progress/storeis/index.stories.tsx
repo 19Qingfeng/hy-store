@@ -8,7 +8,9 @@ export default {
 
 const Template: ComponentStory<typeof Progress> = (args) => (
   <>
-    <div style={{ marginBottom: "20px", fontSize: "12px" }}>基础进度条: </div>
+    <div style={{ marginBottom: "20px", fontSize: "12px" }}>
+      {args.circle ? "圆形" : "基础"}进度条:{" "}
+    </div>
     <Progress {...args}></Progress>
   </>
 );
@@ -21,3 +23,13 @@ Primary.args = {
 };
 
 Primary.storyName = "基础用法";
+
+export const Circle = Template.bind({});
+
+Circle.args = {
+  percentage: 20,
+  circle: true,
+  showText: true,
+};
+
+Circle.storyName = "圆形进度条";
