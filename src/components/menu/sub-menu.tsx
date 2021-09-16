@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Icon from "../icon";
 import { MenuContext } from "./menu";
 import { MenuItemProps } from "./menu-item";
-import Transition from "../transiton";
+import Transition from "../transition";
 
 export interface SumMenuProps {
   index?: string;

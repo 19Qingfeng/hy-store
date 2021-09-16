@@ -27,6 +27,7 @@ export default function App() {
   };
   const handleSelect = (value: string) => {
     console.log(value, 'value');
+    alert(value)
   };
   return (
     <div>

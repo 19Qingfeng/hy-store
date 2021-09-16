@@ -25,10 +25,21 @@ const AutoComplete: React.FC<AutoCompleteProps> = (props) => {
     }
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+    if (
+      e.target &&
+      (e.target as HTMLElement).tagName.toLocaleLowerCase() === 'li'
+    ) {
+      const el = e.target as HTMLLIElement;
+      const value = el.innerText;
+      onSelect(value);
+    }
+  };
+
   return (
     <div>
       <Input value={inputValue} onChange={handleChange} {...rest}></Input>;
-      <ul>
+      <ul onClick={(e) => handleClick(e)}>
         {suggestions?.map((item, index) => {
           return <li key={index}>{item}</li>;
         })}
