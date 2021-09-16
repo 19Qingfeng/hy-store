@@ -1,16 +1,16 @@
 import './styles/index.scss';
 // import Button from './components/button/button';
-import Menu from './components/menu/menu';
-import MenuItem from './components/menu/menu-item';
-import SubMenu from './components/menu/sub-menu';
-import Icon from './components/icon';
-import Alert from './components/alert';
-import Row from './components/grid/row';
-import Col from './components/grid/column';
-import Input from './components/input';
+import { Menu } from './components/menu/menu';
+import { MenuItem } from './components/menu/menu-item';
+import { SubMenuItem } from './components/menu/sub-menu';
+import { Icon } from './components/icon';
+import { Alert } from './components/alert';
+import { Row } from './components/grid/row';
+import { Col } from './components/grid/column';
+import { Input } from './components/input';
 
 import { useEffect, useRef, useState } from 'react';
-import AutoComplete from './components/autoComplete';
+import { AutoComplete } from './components/autoComplete';
 
 export default function App() {
   // button
@@ -23,11 +23,12 @@ export default function App() {
   // autoComplete
   const list = ['wang', 'hao', 'yu', 'zui', 'qiang', 'da'];
   const handleFetchSuggest = (value: string) => {
-    return list.filter((item) => item.indexOf(value) !== -1);
+    return list
+      .filter((item) => item.indexOf(value) !== -1)
+      .map((i) => ({ value: i }));
   };
   const handleSelect = (value: string) => {
     console.log(value, 'value');
-    alert(value)
   };
   return (
     <div>
@@ -43,7 +44,7 @@ export default function App() {
           disabled
           prefix="user"
           value={value}
-          defaultValue={10}
+          defaultValue="10"
           onChange={(e) => setValue(e.target.value)}
         />
         <Input
@@ -51,7 +52,7 @@ export default function App() {
           ref={inputRef}
           style={{ marginLeft: '20px' }}
           value={value}
-          defaultValue={10}
+          defaultValue="10"
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
@@ -76,14 +77,10 @@ export default function App() {
       </div>
       <Icon icon="coffee" size="10x" theme="primary" />
       <div>
-        <Menu
-          activeIndex={'0'}
-          onSelect={(index) => alert(index)}
-          trigger="click"
-        >
-          <SubMenu title="顶部">
+        <Menu activeIndex={'0'} onSelect={(index) => alert(index)}>
+          <SubMenuItem title="wang.haoyu">
             <MenuItem>sub 1</MenuItem>
-          </SubMenu>
+          </SubMenuItem>
           submenu
           <MenuItem>第一个MenuItem</MenuItem>
           <MenuItem>第二个MenuItem</MenuItem>

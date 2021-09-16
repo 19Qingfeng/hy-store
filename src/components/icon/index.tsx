@@ -6,6 +6,7 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 export * from "@fortawesome/fontawesome-svg-core";
 
 library.add(fas);
@@ -21,6 +22,13 @@ export type ThemeProps =
   | "dark";
 
 export interface IconProps extends FontAwesomeIconProps {
+  /**
+   * fortawesome 图标定义
+   */
+  icon: IconProp;
+  /**
+   * 字体主题
+   * */
   theme?: ThemeProps;
 }
 
@@ -39,4 +47,4 @@ const Icon: React.FC<IconProps> = (props) => {
 
 Icon.defaultProps = {};
 
-export default Icon;
+export { Icon };

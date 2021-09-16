@@ -1,9 +1,13 @@
 import React, { useState, useContext } from "react";
 import classNames from "classnames";
-import Icon from "../icon";
+import { Icon } from "../icon";
 import { MenuContext } from "./menu";
 import { MenuItemProps } from "./menu-item";
+<<<<<<< HEAD
 import Transition from "../transition";
+=======
+import { Transition } from "../transiton";
+>>>>>>> 55cb5624091e5c98aa5d52d94767984e2fa5b908
 
 export interface SumMenuProps {
   index?: string;
@@ -94,4 +98,4 @@ const SubMenuItem: React.FC<SumMenuProps> = (props) => {
 
 SubMenuItem.displayName = "SubMenu";
 
-export default SubMenuItem;
+export { SubMenuItem };

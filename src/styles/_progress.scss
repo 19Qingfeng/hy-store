@@ -1,0 +1,49 @@
+@include b("progress") {
+  width: 300px;
+  &__wrapper {
+    border-radius: $progress-border-radius;
+    position: relative;
+    background-color: $progress-wrapper-bg-color;
+  }
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    border-radius: $progress-border-radius;
+    transition: $progress-bar-transition;
+  }
+  &__text {
+    color: $progress-text-color;
+    font-size: $progress-text-size;
+  }
+  @each $theme, $color in $theme-colors {
+    &__inner--#{$theme} {
+      background-color: $color;
+      color: lighten($color, 30%);
+    }
+  }
+}
+
+/* 圆形进度条 */
+@include b("progress-circle") {
+  position: relative;
+  &__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+  &__svg {
+    transform: rotate(-90deg);
+    height: 100%;
+    width: 100%;
+  }
+  &__track {
+    fill: transparent;
+  }
+  &__path {
+    fill: transparent;
+  }
+}

@@ -12,10 +12,25 @@ import classNames from "classnames";
 type JustifyType = "center" | "start" | "end";
 
 export interface RowProps {
+  /**
+   * 类名
+   */
   className?: string;
+  /**
+   * 渲染HtmlELEMENTTag类型
+   */
   tag?: string;
+  /**
+   * 横向对其方式
+   */
   justify?: JustifyType;
-  gap?: number; // 列与列之间的间隙
+  /**
+   * 列与列之间的间隙
+   */
+  gap?: number;
+  /**
+   * 样式内容
+   */
   style?: React.CSSProperties;
 }
 
@@ -29,6 +44,9 @@ export const RowContext = createContext<RowContext>({
 
 const prefix = "hy";
 
+/**
+ * Grid布局系统
+ */
 const Row: FC<RowProps> = (props) => {
   const { className, style, gap = 0, tag = "div", justify, children } = props;
 
@@ -79,4 +97,4 @@ const Row: FC<RowProps> = (props) => {
   );
 };
 
-export default Row;
+export { Row };

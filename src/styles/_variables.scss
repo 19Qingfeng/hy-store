@@ -21,7 +21,7 @@ $blue: #0d6efd !default;
 $indigo: #6610f2 !default;
 $purple: #6f42c1 !default;
 $pink: #d63384 !default;
-$red: #fff2f0 !default;
+$red: #be3723 !default;
 $orange: #fd7e14 !default;
 $yellow: #fadb14 !default;
 $green: #d6f4e4 !default;
@@ -289,14 +289,6 @@ $input-group-addon-color: $input-color !default;
 $input-group-addon-bg: $gray-200 !default;
 $input-group-addon-border-color: $input-border-color !default;
 
-// Progress bars
-
-$progress-font-size: $font-size-base * 0.75 !default;
-$progress-bg: $gray-200 !default;
-$progress-border-radius: $border-radius !default;
-$progress-bar-color: $white !default;
-$progress-bar-transition: width 0.6s ease !default;
-
 // Grid
 
 $--sm: 768px !default;
@@ -326,3 +318,31 @@ $--breakpoints: (
 $input-border-color: #c0c4cc;
 $input-hover-color: #8cc5ff;
 $input-disabled-bg-color: #e7eaef;
+
+// autocomplete
+$autocomplete-input-height: 32px !default;
+$autocomplete-list-top: 36px !default;
+$autocomplete-list-left: 0px !default;
+$autocomplete-list-bg: $white !default;
+$autocomplete-list-width: 100% !default;
+$autocomplete-list-height: 300px !default;
+$autocomplete-list-border-radius: 4px !default;
+$autocomplete-list-border: 1px solid #e4e7ed !default;
+$autocomplete-list-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$autocomplete-list-padding: 0;
+
+$autocomplete-list-item-line-height: 200% !default;
+$autocomplete-list-item-padding: 5px 20px !default;
+
+$autocomplete-list-item-hover-color: #f5f7fa !default;
+$autocomplete-list-item-selected-color: #f5f7fa !default;
+
+// progress
+$progress-text-color: #fff !default;
+$progress-text-size: 12px !default;
+$progress-wrapper-bg-color: #f5f5f5 !default;
+$progress-border-radius: 100px !default;
+
+// Progress bars
+$progress-font-size: $font-size-base * 0.75 !default;
+$progress-bar-transition: width 0.6s ease !default;

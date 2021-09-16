@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Input, { InputProps } from "../index";
+import { Input, InputProps } from "../index";
 import { fireEvent, render } from "@testing-library/react";
 
 const renderInputByProps = (props: InputProps) => {

@@ -1,6 +1,6 @@
 import React, { forwardRef, useState } from "react";
 import classNames from "classnames";
-import Icon, { IconProp } from "../icon";
+import { Icon, IconProp } from "../icon";
 import { isValidValue } from "../../utils";
 
 type AlertType = "primary" | "success" | "info" | "warning" | "danger";
@@ -107,4 +107,4 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
   );
 });
 
-export default Alert;
+export { Alert };
