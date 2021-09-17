@@ -178,9 +178,9 @@ const Upload: React.FC<UploadProps> = (props) => {
 
   const handleRemove = (file: UploadFile) => {
     setFileList((preLists) => {
-      return preLists.filter(i => i.uid !== file.uid)
-    })
-    onRemove && onRemove(file)
+      return preLists.filter((i) => i.uid !== file.uid);
+    });
+    onRemove && onRemove(file);
   };
 
   const handleUpload = () => {
@@ -194,10 +194,7 @@ const Upload: React.FC<UploadProps> = (props) => {
         点击上传
       </Button>
       {fileList.length !== 0 && (
-        <UploadList
-          fileList={defaultFileList}
-          onRemove={handleRemove}
-        ></UploadList>
+        <UploadList fileList={fileList} onRemove={handleRemove}></UploadList>
       )}
       <input
         ref={fileRef}

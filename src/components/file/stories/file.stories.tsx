@@ -41,7 +41,7 @@ Primary.args = {
       percentage: 30,
     },
     {
-      uid: '1111222',
+      uid: '111122233',
       size: 1000,
       name: 'wang.haoyu',
       status: 'error',
