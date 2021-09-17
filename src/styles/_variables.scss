@@ -1,9 +1,9 @@
-$prefix: "hy";
+$prefix: 'hy';
 /* BEM */
-$namespace: "hy";
-$element-separator: "__";
-$modifier-separator: "--";
-$state-prefix: "is-";
+$namespace: 'hy';
+$element-separator: '__';
+$modifier-separator: '--';
+$state-prefix: 'is-';
 
 $white: #fff !default;
 $gray-100: #f8f9fa !default;
@@ -45,21 +45,21 @@ $warning-icon-color: #fffbe6 !default;
 $danger-icon-color: #ff4d4f !default;
 
 $theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "success": $success,
-  "info": $info,
-  "warning": $warning,
-  "danger": $danger,
-  "light": $light,
-  "dark": $dark,
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
 ) !default;
 
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
-  "Liberation Mono", "Courier New", monospace !default;
+  'Liberation Mono', 'Courier New', monospace !default;
 $font-family-base: $font-family-sans-serif !default;
 
 // 字体大小
@@ -297,19 +297,19 @@ $--lg: 1200px !default;
 $--xl: 1920px !default;
 
 $--breakpoints: (
-  "xs": (
+  'xs': (
     max-width: $--sm - 1,
   ),
-  "sm": (
+  'sm': (
     min-width: $--sm,
   ),
-  "md": (
+  'md': (
     min-width: $--md,
   ),
-  "lg": (
+  'lg': (
     min-width: $--lg,
   ),
-  "xl": (
+  'xl': (
     min-width: $--xl,
   ),
 );
@@ -346,3 +346,10 @@ $progress-border-radius: 100px !default;
 // Progress bars
 $progress-font-size: $font-size-base * 0.75 !default;
 $progress-bar-transition: width 0.6s ease !default;
+
+// file upload
+$file-status: (
+  'success': $success,
+  'error': $danger,
+  'uploading': $info,
+);

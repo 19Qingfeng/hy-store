@@ -1,0 +1,43 @@
+
+@include b('upload') {
+  &__list {
+    padding: 0;
+  }
+  &__li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 3px;
+    transition: all 0.3s;
+    .#{$namespace}-file__ri--hover {
+      display: none;
+    }
+    &:hover {
+      background-color: #f5f7fa;
+      .#{$namespace}-file__name {
+        color: #409eff;
+      }
+      // 隐藏ri
+      .#{$namespace}-file__ri {
+        display: none;
+      }
+      // 显示X
+      .#{$namespace}-file__ri--hover {
+        display: block;
+      }
+    }
+  }
+  .#{$namespace}-file__icon {
+    margin-right: 10px;
+  }
+  @each $key, $value in $file-status {
+    .#{$namespace}-file--#{$key} {
+      // TODO: saturate desaturate 内置饱和度函数
+      color: saturate($value, 90%);
+    }
+  }
+}
