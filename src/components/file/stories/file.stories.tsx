@@ -30,7 +30,7 @@ Primary.args = {
       uid: '1111',
       size: 1000,
       name: 'wang.haoyu',
-      status: 'success',
+      // status: 'success',
       percentage: 100,
     },
     {

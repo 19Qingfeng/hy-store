@@ -55,6 +55,10 @@ interface UploadProps {
    * 上传失败钩子
    */
   onError: (error: any, file: File) => void;
+  /**
+   * 内置上传进度条高度
+   */
+  strokeWidth?: number;
 }
 
 const namespace = 'hy';
@@ -68,6 +72,7 @@ const Upload: React.FC<UploadProps> = (props) => {
     onRemove,
     className,
     action,
+    strokeWidth = 6,
     beforeUpload,
     onChange,
     onProgress,
@@ -194,7 +199,7 @@ const Upload: React.FC<UploadProps> = (props) => {
         点击上传
       </Button>
       {fileList.length !== 0 && (
-        <UploadList fileList={fileList} onRemove={handleRemove}></UploadList>
+        <UploadList fileList={fileList} strokeWidth={strokeWidth} onRemove={handleRemove}></UploadList>
       )}
       <input
         ref={fileRef}

@@ -1,23 +1,28 @@
-
 @include b('upload') {
   &__list {
     padding: 0;
   }
   &__li {
+    margin: 5px;
+    list-style: none;
+  }
+  &__lin {
+    padding: 5px;
+    list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    list-style: none;
     cursor: pointer;
-    font-size: 14px;
-    padding: 5px;
+    font-size: 12px;
     border-radius: 3px;
+    color:#606266;
     transition: all 0.3s;
     .#{$namespace}-file__ri--hover {
       display: none;
     }
     &:hover {
       background-color: #f5f7fa;
+      transform: scale(1.02);
       .#{$namespace}-file__name {
         color: #409eff;
       }
@@ -31,13 +36,17 @@
       }
     }
   }
+  &__progress {
+    margin-top: 10px;
+    width: 100%;
+  }
   .#{$namespace}-file__icon {
     margin-right: 10px;
   }
   @each $key, $value in $file-status {
     .#{$namespace}-file--#{$key} {
       // TODO: saturate desaturate 内置饱和度函数
-      color: saturate($value, 90%);
+      // color: saturate($value, 90%);
     }
   }
 }

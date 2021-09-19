@@ -349,7 +349,7 @@ $progress-bar-transition: width 0.6s ease !default;
 
 // file upload
 $file-status: (
-  'success': $success,
-  'error': $danger,
+  'success': #0c8845,
+  'error': #b72020,
   'uploading': $info,
 );
