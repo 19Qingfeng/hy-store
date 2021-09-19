@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import { http } from './ajax';
 
 type FileStatus = 'ready' | 'rejected' | 'uploading' | 'error' | 'success';
+
 // TODO: 抽离颜色样式
 // TODO: transition过度动画列表增加
-
 export interface UploadFile {
   uid: string;
   size: number;
@@ -21,6 +21,7 @@ export interface UploadFile {
 
 // TODO: 上传应该XHR替换axios
 // TODO: error应该是自定义的error 而非Error
+// TODO: 替换全部File为UploadFile对象
 interface UploadProps {
   className: string;
   /**
@@ -31,6 +32,34 @@ interface UploadProps {
    * 默认上传的文件数组
    */
   defaultFileList?: UploadFile[];
+  /**
+   * 内置上传进度条高度
+   */
+  strokeWidth?: number;
+  /**
+   * 自定义上传请求头
+   */
+  headers?: { [name: string]: any };
+  /**
+   * 自定义上传文件名称
+   */
+  name?: string;
+  /**
+   * 源生Input属性 支持上传的文件列表
+   */
+  accept?: string;
+  /**
+   * 是否支持多选
+   */
+  multiple?: boolean;
+  /**
+   * 自定义上传额外携带数据
+   */
+  data?: { [name: string]: any };
+  /**
+   * 跨域上传请求是否支持携带cookie
+   */
+  withCredentials?: boolean;
   /**
    * 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。(传入Promise resolve(new File)则会将新的文件替代旧的文件进行上传)
    */
@@ -46,7 +75,7 @@ interface UploadProps {
   /**
    * 上传中钩子
    */
-  onProgress?: (percentage: number, file: File) => void;
+  onProgress?: (percentage: number, file: UploadFile) => void;
   /**
    * 上传成功钩子
    */
@@ -55,10 +84,6 @@ interface UploadProps {
    * 上传失败钩子
    */
   onError: (error: any, file: File) => void;
-  /**
-   * 内置上传进度条高度
-   */
-  strokeWidth?: number;
 }
 
 const namespace = 'hy';
@@ -68,11 +93,17 @@ const namespace = 'hy';
  */
 const Upload: React.FC<UploadProps> = (props) => {
   const {
+    accept,
+    multiple,
     defaultFileList = [],
     onRemove,
     className,
     action,
     strokeWidth = 6,
+    name,
+    headers,
+    data,
+    withCredentials,
     beforeUpload,
     onChange,
     onProgress,
@@ -132,39 +163,60 @@ const Upload: React.FC<UploadProps> = (props) => {
     });
   };
 
+  const generateFormData = (file: UploadFile): FormData => {
+    const formData = new FormData();
+    const fileName = name || file.name;
+    formData.append(fileName, file.raw!);
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+    }
+    return formData;
+  };
+
+  const fetchFile = async (file: UploadFile, data: FormData) => {
+    return await http.post(action, data, {
+      headers: {
+        ...headers,
+        'Content-Type': 'multipart/form-data',
+      },
+      withCredentials,
+      onUploadProgress: (e: ProgressEvent) => {
+        const percentage = Math.round((e.loaded / e.total) * 100);
+        // 谨记每次渲染state和prop都是相互独立的
+        // 每次state/props改变都会重新执行渲染函数 而每一次渲染函数的作用域中state/props都是独立的 固定的常量！！！
+        // FC中每次渲染(函数运行时)的state都是互相独立的
+        // state中的值改变的时候 这个FC函数组件会重新运行(带着新的state)
+        // 而旧的因为这里的闭包原因 拿到的是自己内部独立的fileList 所以是[]
+        // setFileList([...])
+        updateFileList(file, {
+          percentage,
+          status: 'uploading',
+        });
+        onProgress && onProgress(percentage, file);
+      },
+    });
+  };
+
   const uploadFile = async (file: File) => {
     const _file: UploadFile = {
       uid: Date.now() + 'hy-file',
       status: 'ready',
       size: file.size,
-      name: file.name,
+      name: name || file.name,
       raw: file,
       percentage: 0,
     };
-    setFileList([...fileList, _file]);
+    // 这里有问题
+    // setFileList([...fileList, _file]);
+    setFileList((preLists) => [...preLists, _file]);
     onChange && onChange('uploading', file);
-    const formData = new FormData();
-    formData.append(file.name, file);
+    // 生成formData数据
+    const formData = generateFormData(_file);
+    // 真实发送请求
     try {
-      const responseData = await http.post(action, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: (e: ProgressEvent) => {
-          const percentage = Math.round((e.loaded / e.total) * 100);
-          // 谨记每次渲染state和prop都是相互独立的
-          // 每次state/props改变都会重新执行渲染函数 而每一次渲染函数的作用域中state/props都是独立的 固定的常量！！！
-          // FC中每次渲染(函数运行时)的state都是互相独立的
-          // state中的值改变的时候 这个FC函数组件会重新运行(带着新的state)
-          // 而旧的因为这里的闭包原因 拿到的是自己内部独立的fileList 所以是[]
-          // setFileList([...])
-          updateFileList(_file, {
-            percentage,
-            status: 'uploading',
-          });
-          onProgress && onProgress(percentage, file);
-        },
-      });
+      const responseData = await fetchFile(_file, formData);
       updateFileList(_file, {
         status: 'success',
         responseData: responseData.data,
@@ -199,11 +251,17 @@ const Upload: React.FC<UploadProps> = (props) => {
         点击上传
       </Button>
       {fileList.length !== 0 && (
-        <UploadList fileList={fileList} strokeWidth={strokeWidth} onRemove={handleRemove}></UploadList>
+        <UploadList
+          fileList={fileList}
+          strokeWidth={strokeWidth}
+          onRemove={handleRemove}
+        ></UploadList>
       )}
       <input
         ref={fileRef}
         type="file"
+        multiple={multiple}
+        accept={accept}
         className={`${namespace}-upload__input`}
         style={{ display: 'none' }}
         onChange={handleFileChange}

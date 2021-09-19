@@ -25,6 +25,13 @@ export const Primary = Template.bind({});
 
 Primary.args = {
   action: 'https://jsonplaceholder.typicode.com/posts',
+  headers: {
+    'name-W':'X-wang.haoyu'
+  },
+  multiple:true,
+  data: {
+    o:'test-id'
+  },
   defaultFileList: [
     {
       uid: '1111',
@@ -51,10 +58,10 @@ Primary.args = {
     console.log('移除',file)
   },
   onSuccess: (response, file) => {
-    // console.log("上传成功了", response, file);
+    console.log("上传成功了", response, file);
   },
   onProgress: (percentage, file) => {
-    // console.log("上传进度", percentage, file);
+    console.log("上传进度", percentage, file);
   },
   onError: (error, file) => {
     // console.log("出现错误了", error, file);
@@ -64,10 +71,11 @@ Primary.args = {
     // console.log("文件:", file);
   },
   beforeUpload: (file) => {
-    const newFile = new File([file], 'wang.haoyu', {
-      type: file.type,
-    });
-    return Promise.resolve(newFile);
+    // const newFile = new File([file], 'wang.haoyu', {
+    //   type: file.type,
+    // });
+    // return Promise.resolve(newFile);
+    return true
   },
 };
 
