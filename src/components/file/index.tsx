@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Button } from '../button/button';
 import { UploadList } from './upload-list';
+import { DragArea } from './drag-area';
 import classNames from 'classnames';
 import { http } from './ajax';
 
@@ -44,6 +44,14 @@ interface UploadProps {
    * 自定义上传文件名称
    */
   name?: string;
+  /**
+   * 是否显示文件列表
+   */
+  showFileList: boolean;
+  /**
+   * 是否开启拖拽上传
+   */
+  drag?: boolean;
   /**
    * 源生Input属性 支持上传的文件列表
    */
@@ -93,6 +101,9 @@ const namespace = 'hy';
  */
 const Upload: React.FC<UploadProps> = (props) => {
   const {
+    children,
+    drag = false,
+    showFileList = true,
     accept,
     multiple,
     defaultFileList = [],
@@ -247,25 +258,34 @@ const Upload: React.FC<UploadProps> = (props) => {
 
   return (
     <div className={classes}>
-      <Button onClick={handleUpload} btnType="primary" size="sm">
-        点击上传
-      </Button>
-      {fileList.length !== 0 && (
+      {/* click事件冒泡处理就可以了 */}
+      <div onClick={handleUpload}>
+        {drag ? (
+          <DragArea
+            onFile={(fileList) => uploadFiles(fileList)}
+          >
+            {children}
+          </DragArea>
+        ) : (
+          children
+        )}
+        <input
+          ref={fileRef}
+          type="file"
+          multiple={multiple}
+          accept={accept}
+          className={`${namespace}-upload__input`}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+      </div>
+      {fileList.length !== 0 && showFileList && (
         <UploadList
           fileList={fileList}
           strokeWidth={strokeWidth}
           onRemove={handleRemove}
         ></UploadList>
       )}
-      <input
-        ref={fileRef}
-        type="file"
-        multiple={multiple}
-        accept={accept}
-        className={`${namespace}-upload__input`}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
     </div>
   );
 };

@@ -15,7 +15,7 @@
     cursor: pointer;
     font-size: 12px;
     border-radius: 3px;
-    color:#606266;
+    color: #606266;
     transition: all 0.3s;
     .#{$namespace}-file__ri--hover {
       display: none;
@@ -48,5 +48,19 @@
       // TODO: saturate desaturate 内置饱和度函数
       // color: saturate($value, 90%);
     }
+  }
+}
+
+// 拖拽区域样式
+@include b('upload__drag') {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  border: 1px dashed #d9d9d9;
+  &:hover {
+    border-color: #409eff;
+  }
+  @include when('dragover') {
+    border-color: #409eff;
   }
 }
