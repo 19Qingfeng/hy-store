@@ -22,8 +22,8 @@ export interface UploadFile {
 // TODO: 上传应该XHR替换axios
 // TODO: error应该是自定义的error 而非Error
 // TODO: 替换全部File为UploadFile对象
-interface UploadProps {
-  className: string;
+export interface UploadProps {
+  className?: string;
   /**
    * 上传框提交地址
    */
@@ -47,7 +47,7 @@ interface UploadProps {
   /**
    * 是否显示文件列表
    */
-  showFileList: boolean;
+  showFileList?: boolean;
   /**
    * 是否开启拖拽上传
    */
@@ -91,7 +91,7 @@ interface UploadProps {
   /**
    * 上传失败钩子
    */
-  onError: (error: any, file: File) => void;
+  onError?: (error: any, file: File) => void;
 }
 
 const namespace = 'hy';

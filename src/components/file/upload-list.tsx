@@ -25,12 +25,16 @@ const UploadList: React.FC<UploadListProps> = (props) => {
       { icon: 'times-circle', theme: 'danger', status: 'error' },
     ];
     const result = maps.find((i) => i.status === status);
-
     return {
       icon: result!.icon as IconProp,
       theme: result!.theme as ThemeProps,
     };
   };
+  try {
+    console.log(Icon, 'this is icon');
+  } catch (e) {
+    console.log(e);
+  }
 
   return (
     <ul className={`${prefix}-upload__list`}>
