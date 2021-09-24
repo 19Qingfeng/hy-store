@@ -118,7 +118,7 @@ describe('Test Upload File Component', () => {
     const wrapper = render(renderUpload(dragProps)),
       uploadArea = wrapper.getByText('Click to Upload'),
       testFile = new File(['Test text'], 'drag.png', { type: 'image/png' });
-      (dragProps.beforeUpload as jest.Mock).mockReturnValue(true)
+    (dragProps.beforeUpload as jest.Mock).mockReturnValue(true);
     // 当拖拽一个文件放置时候
     // dataTransfer JSDOM不支持
     // see: https://github.com/testing-library/react-testing-library/issues/339
@@ -130,12 +130,16 @@ describe('Test Upload File Component', () => {
       },
     });
     // 我仅仅是触发～并没有绑定 相当于触发drop 但是传入的是我的参数～
-    // dom上的同名事件drop会被触发 但是传入的是我自定义的事件对象 
+    // dom上的同名事件drop会被触发 但是传入的是我自定义的事件对象
     // 而非用户触发行为的事件对象
-    fireEvent(uploadArea, dropEvent)
+    fireEvent(uploadArea, dropEvent);
     expect(dragProps.beforeUpload).toBeCalled();
     await waitFor(() => {
       expect(wrapper.queryByText('drag.png')).toBeInTheDocument();
     });
+    expect(dragProps.onSuccess).toBeCalledWith(
+      'success',
+      testFile
+    );
   });
 });
