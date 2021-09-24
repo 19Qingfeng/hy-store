@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import {
+  cleanup,
   fireEvent,
   render,
   RenderResult,
   waitFor,
+  createEvent,
 } from '@testing-library/react';
 import { Upload, UploadProps } from '..';
 import axios from 'axios';
-import { act } from 'react-dom/test-utils';
 
 let wrapper: RenderResult,
   fileInput: HTMLInputElement,
@@ -20,8 +21,14 @@ function renderUpload(props: UploadProps) {
 // mock Icon模块
 jest.mock('../../icon', () => {
   return {
-    Icon: ({ icon }: { icon: string }) => {
-      return <span>{icon}</span>;
+    Icon: ({
+      icon,
+      onClick,
+    }: {
+      icon: string;
+      onClick: MouseEventHandler<HTMLElement>;
+    }) => {
+      return <span onClick={onClick}>{icon}</span>;
     },
   };
 });
@@ -32,6 +39,15 @@ const mockAxios = axios as jest.Mocked<typeof axios>;
 
 const defaultProps: UploadProps = {
   action: 'http://hycoding.com',
+  onSuccess: jest.fn(),
+  onProgress: jest.fn(),
+  onRemove: jest.fn(),
+};
+
+const dragProps: UploadProps = {
+  action: 'http://hycoding.com',
+  drag: true,
+  beforeUpload: jest.fn(),
   onSuccess: jest.fn(),
   onProgress: jest.fn(),
 };
@@ -45,7 +61,6 @@ describe('Test Upload File Component', () => {
 
   test('upload file should be workd fine', async () => {
     expect(fileInput).toBeInTheDocument();
-    // 创建文件对象
     const testFile = new File(['Test text'], 'wang.png', { type: 'image/png' });
     // 模拟axios实现
     mockAxios.post.mockImplementation(() => {
@@ -65,7 +80,62 @@ describe('Test Upload File Component', () => {
     await waitFor(() => {
       expect(wrapper.queryByText('wang.png')).toBeInTheDocument();
     });
-    // // 期待上传结束成功图标出现
+    // 期待上传结束成功图标出现
     expect(wrapper.queryByText('check-circle')).toBeInTheDocument();
+    expect(wrapper.queryByText('times')).toBeInTheDocument();
+    // 点击删除
+    fireEvent.click(wrapper.queryByText('times')!);
+    // 期待文件不出现
+    expect(wrapper.queryByText('wang.png')).not.toBeInTheDocument();
+    /**
+     * see: https://jestjs.io/docs/expect#expectobjectcontainingobject
+     * For example, let's say that we expect an onPress function to be called with an Event object, and all we need to verify is that the event has event.x and event.y properties. We can do that with:
+
+      test('onPress gets called with the right thing', () => {
+        const onPress = jest.fn();
+        simulatePresses(onPress);
+        expect(onPress).toBeCalledWith(
+          expect.objectContaining({
+            x: expect.any(Number),
+            y: expect.any(Number),
+          }),
+        );
+      });
+     */
+    expect(defaultProps.onRemove).toBeCalledWith(
+      expect.objectContaining({
+        name: 'wang.png',
+        status: 'success',
+        // percentage: 0, 这里模拟了axios 所有percentage为0
+        raw: testFile,
+      })
+    );
+  });
+
+  test('drag upload Component', async () => {
+    cleanup();
+    mockAxios.post.mockResolvedValue({ data: 'success' });
+    const wrapper = render(renderUpload(dragProps)),
+      uploadArea = wrapper.getByText('Click to Upload'),
+      testFile = new File(['Test text'], 'drag.png', { type: 'image/png' });
+      (dragProps.beforeUpload as jest.Mock).mockReturnValue(true)
+    // 当拖拽一个文件放置时候
+    // dataTransfer JSDOM不支持
+    // see: https://github.com/testing-library/react-testing-library/issues/339
+    // 返回的是event对象
+    const dropEvent = createEvent.drop(uploadArea);
+    Object.defineProperty(dropEvent, 'dataTransfer', {
+      value: {
+        files: [testFile],
+      },
+    });
+    // 我仅仅是触发～并没有绑定 相当于触发drop 但是传入的是我的参数～
+    // dom上的同名事件drop会被触发 但是传入的是我自定义的事件对象 
+    // 而非用户触发行为的事件对象
+    fireEvent(uploadArea, dropEvent)
+    expect(dragProps.beforeUpload).toBeCalled();
+    await waitFor(() => {
+      expect(wrapper.queryByText('drag.png')).toBeInTheDocument();
+    });
   });
 });
