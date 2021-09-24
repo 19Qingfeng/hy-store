@@ -30,11 +30,6 @@ const UploadList: React.FC<UploadListProps> = (props) => {
       theme: result!.theme as ThemeProps,
     };
   };
-  try {
-    console.log(Icon, 'this is icon');
-  } catch (e) {
-    console.log(e);
-  }
 
   return (
     <ul className={`${prefix}-upload__list`}>

@@ -46,25 +46,26 @@ describe('Test Upload File Component', () => {
   test('upload file should be workd fine', async () => {
     expect(fileInput).toBeInTheDocument();
     // 创建文件对象
-    const testFile = new File(['Test text'], 'test.png', { type: 'image/png' });
+    const testFile = new File(['Test text'], 'wang.png', { type: 'image/png' });
     // 模拟axios实现
     mockAxios.post.mockImplementation(() => {
       return Promise.resolve({ data: 'success' });
     });
-    act(() => {
-      fireEvent.change(fileInput, {
-        target: {
-          files: [testFile],
-        },
-      });
+    // 上传之前没有出现完成图标
+    expect(wrapper.queryByText('check-circle')).not.toBeInTheDocument();
+    // fireEvent 内部会被act包裹
+    fireEvent.change(fileInput, {
+      target: {
+        files: [testFile],
+      },
     });
     // 期待加载图标出现
     expect(wrapper.getByText('spinner')).toBeInTheDocument();
-    // // 期待上传
-    // await waitFor(() => {
-    //   expect(wrapper.queryByText('wang.txt')).toBeInTheDocument();
-    // });
+    // 期待上传成功  wang.png 文件出现在页面上
+    await waitFor(() => {
+      expect(wrapper.queryByText('wang.png')).toBeInTheDocument();
+    });
     // // 期待上传结束成功图标出现
-    // expect(wrapper.queryByText('wang.txt')).toBeInTheDocument();
+    expect(wrapper.queryByText('check-circle')).toBeInTheDocument();
   });
 });
