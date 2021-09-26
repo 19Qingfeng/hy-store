@@ -15,6 +15,10 @@ export { Input } from './components/input';
 // Menu Menu.Item Menu.SubMenuItem
 export { Menu } from './components/menu';
 
+export { MenuItem } from './components/menu';
+
+export { SubMenuItem } from './components/menu';
+
 export { Progress } from './components/progress';
 
 export { Transition } from './components/transition';

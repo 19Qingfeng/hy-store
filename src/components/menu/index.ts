@@ -14,4 +14,4 @@ const ExtendMenu: IMenu = Menu as IMenu;
 ExtendMenu.Item = MenuItem;
 ExtendMenu.SubMenuItem = SubMenuItem;
 
-export { ExtendMenu as Menu };
+export { ExtendMenu as Menu, MenuItem, SubMenuItem };
