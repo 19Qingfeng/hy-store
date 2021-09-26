@@ -5,7 +5,7 @@ import { MenuContext } from "./menu";
 import { MenuItemProps } from "./menu-item";
 import { Transition } from "../transition";
 
-export interface SumMenuProps {
+export interface SubMenuProps {
   index?: string;
   title?: string;
   className?: string;
@@ -13,7 +13,7 @@ export interface SumMenuProps {
 
 const prefix = "hy";
 
-const SubMenuItem: React.FC<SumMenuProps> = (props) => {
+const SubMenuItem: React.FC<SubMenuProps> = (props) => {
   // props
   const { index, title, className, children } = props;
   // provide
