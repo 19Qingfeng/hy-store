@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from "react";
+import React, { forwardRef } from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Icon } from "../icon";
 import classNames from "classnames";

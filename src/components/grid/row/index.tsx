@@ -34,11 +34,11 @@ export interface RowProps {
   style?: React.CSSProperties;
 }
 
-export interface RowContext {
+export interface RowContextProps {
   gap?: number;
 }
 
-export const RowContext = createContext<RowContext>({
+export const RowContext = createContext<RowContextProps>({
   gap: 0,
 });
 
@@ -58,7 +58,7 @@ const Row: FC<RowProps> = (props) => {
     className
   );
 
-  const provideContext: RowContext = {
+  const provideContext: RowContextProps = {
     gap,
   };
 
