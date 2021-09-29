@@ -1,9 +1,25 @@
 {
   "name": "hy-store",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "author": "19Qingfeng",
+  "description": "be Better React 17 Component.",
+  "private": false,
+  "keywords": [
+    "React",
+    "Ui",
+    "Typescript"
+  ],
+  "homepage": "https://github.com/19Qingfeng/hy-store",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/19Qingfeng/hy-store"
+  },
+  "files": [
+    "lib"
+  ],
   "main": "lib/index.js",
   "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -33,7 +49,8 @@
     "build-storybook": "build-storybook -s public",
     "build-ts": "npm run rm && tsc -p tsconfig.build.json",
     "build-css": "node-sass src/styles/index.scss lib/index.css --output-style compressed",
-    "build": "npm run build-ts && npm run build-css"
+    "build": "npm run build-ts && npm run build-css",
+    "prepublish": "npm run build"
   },
   "eslintConfig": {
     "extends": [
