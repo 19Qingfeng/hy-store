@@ -5,7 +5,11 @@
 ### `install`
 
 ```shell
+
+npm install hy-store
+
 yarn add hy-store
+
 ```
 
 ### `Example:`
