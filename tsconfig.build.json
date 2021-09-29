@@ -7,7 +7,7 @@
     "outDir": "lib",
     "declaration": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports":true
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src"

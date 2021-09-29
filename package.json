@@ -2,8 +2,8 @@
   "name": "hy-store",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
-  "module": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",

@@ -1,25 +1,25 @@
-import React from "react";
-import classNames from "classnames";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import classNames from 'classnames';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-export * from "@fortawesome/fontawesome-svg-core";
+} from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+export * from '@fortawesome/fontawesome-svg-core';
 
 library.add(fas);
 
 export type ThemeProps =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "info"
-  | "warning"
-  | "danger"
-  | "light"
-  | "dark";
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'danger'
+  | 'light'
+  | 'dark';
 
 export interface IconProps extends FontAwesomeIconProps {
   /**
@@ -32,7 +32,7 @@ export interface IconProps extends FontAwesomeIconProps {
   theme?: ThemeProps;
 }
 
-const prefix = "hy";
+const prefix = 'hy';
 
 const Icon: React.FC<IconProps> = (props) => {
   const { className, theme, ...rest } = props;
