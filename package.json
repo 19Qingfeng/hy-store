@@ -30,13 +30,16 @@
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
+    "test:ci": "cross-env CI=true react-scripts test",
     "storybook": "start-storybook -p 6006 -s public",
     "rm": "rimraf lib",
+    "lint": "eslint --ext js,ts,jsx,tsx src --max-warnings 10",
     "build-storybook": "build-storybook -s public",
     "build-ts": "npm run rm && tsc -p tsconfig.build.json",
     "build-css": "node-sass src/styles/index.scss lib/index.css --output-style compressed",
     "build": "npm run build-ts && npm run build-css",
-    "prepublish": "npm run build"
+    "prepublish": "npm run lint && npm run test:ci && npm run build",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -70,12 +73,13 @@
     "react-dom": ">=16.8.0"
   },
   "devDependencies": {
-    "axios": "^0.21.4",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
-    "typescript": "^4.1.2",
-    "react-scripts": "4.0.3",
+    "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-docs": "^6.3.8",
+    "@storybook/addon-essentials": "^6.3.7",
+    "@storybook/addon-links": "^6.3.7",
+    "@storybook/node-logger": "^6.4.0-alpha.27",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.8",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -83,17 +87,18 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@storybook/addon-actions": "^6.3.7",
-    "@storybook/addon-essentials": "^6.3.7",
-    "@storybook/addon-links": "^6.3.7",
-    "@storybook/node-logger": "^6.4.0-alpha.27",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.8",
     "@types/react-transition-group": "^4.4.2",
     "add": "^2.0.6",
+    "axios": "^0.21.4",
+    "cross-env": "^7.0.3",
     "eslint-plugin-html": "^6.1.2",
+    "husky": "^7.0.2",
     "node-sass": "^6.0.1",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "react-scripts": "4.0.3",
     "rimraf": "^3.0.2",
+    "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   }
 }
