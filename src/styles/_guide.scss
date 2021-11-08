@@ -1,0 +1,7 @@
+@include b('guide') {
+  &__mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}

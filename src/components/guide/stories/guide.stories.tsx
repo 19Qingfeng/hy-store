@@ -7,10 +7,24 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof Guide>;
 
-const Template: ComponentStory<typeof Guide> = (args) => <Guide {...args} />;
+const Template: ComponentStory<typeof Guide> = (args) => {
+  return (
+    <>
+      <div
+        style={{ width: '200px', height: '200px', background: 'blue' }}
+        id="test"
+      >
+        第一个元素
+      </div>
+      <Guide {...args} />;
+    </>
+  );
+};
 
 export const Primary = Template.bind({});
 
-Primary.args = {};
+Primary.args = {
+  step: [{ id: 'test' }],
+};
 
 Primary.storyName = '基础用法';
